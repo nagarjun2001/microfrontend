@@ -1,17 +1,35 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate,Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AdminNav from '../Navbar/AdminNav';
+import ULogNav from '../Navbar/ULogNav';
 
 const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [role, setRole] = useState("user"); 
+    const [role, setRole] = useState("user");
+
+    const validateEmail = (email) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (!validateEmail(email)) {
+            toast.warn("Please enter a valid email address.");
+            return;
+        }
+
+        if (password.length < 1) {
+            toast.warn("Password must be at least 6 characters long.");
+            return;
+        }
+
         const apiUrl = role === "creator" 
             ? `http://localhost:1234/creator/email/${email}` 
             : `http://localhost:1234/user/email/${email}`;
@@ -23,7 +41,7 @@ const Login = () => {
                     toast.success("Login Success");
                     navigate(role === "creator" ? "/CreatorHomepage" : "/UserHomepage");
                 } else {
-                    toast.error("Incorrect Email and Password!!!");
+                    toast.error("Incorrect Email or Password.");
                 }
             })
             .catch((err) => {
@@ -33,6 +51,8 @@ const Login = () => {
     };
 
     return (
+        <>
+        <ULogNav />
         <div style={{
             backgroundImage: `url('https://images.ctfassets.net/9uhkiji6mhey/5QJ6ri0r1fDdtycvlcZwub/0a1ccb367f7c89bf5758b254df186383/YTkidsv2-content-01.jpg?q=100')`,
             backgroundSize: 'cover',
@@ -65,8 +85,7 @@ const Login = () => {
                             placeholder="Enter your email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
+                            required />
                     </div>
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700">Password</label>
@@ -77,8 +96,7 @@ const Login = () => {
                             placeholder="Enter your password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
+                            required />
                     </div>
                     <button
                         type="submit"
@@ -90,7 +108,7 @@ const Login = () => {
                 </form>
             </div>
             <ToastContainer />
-        </div>
+        </div></>
     );
 };
 

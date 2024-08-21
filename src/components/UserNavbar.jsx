@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import logo from '../images/ytlogo.png'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import './Navbar.css'
 
 export default () => {
   const [state, setState] = useState(false)
+
+  const navigate = useNavigate();
 
   const navigation = [
       { title: "Customers", path: "javascript:void(0)" },
@@ -12,6 +14,19 @@ export default () => {
       { title: "Guides", path: "javascript:void(0)" },
       { title: "Partners", path: "javascript:void(0)" }
   ]
+
+    //   useEffect(() => {
+    //     if (window.location.pathname === '/userhomepage' && sessionDuration === 0) {
+    //         handleLogout();
+    //     }
+    // }, [location, sessionDuration]);
+
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("userid");
+    sessionStorage.removeItem("sessionDuration"); 
+    navigate("/login");
+};
 
   return (
       <nav className="absolute bg-red-600 bg-opacity-900 font-bold w-full border-b border-transparent md:border-0 md:static">
@@ -55,15 +70,10 @@ export default () => {
                   </ul>
               </div>
               <div className="hidden md:inline-block">
-                <Link to="/regtype" className="py-2 px-4 text-white bg-indigo-600 hover:bg-indigo-700 rounded-md shadow">
-                    Sign up
+                <Link to="/" onClick={handleLogout} className="py-2 px-4 text-white bg-indigo-600 hover:bg-indigo-700 rounded-md shadow">
+                    Logout
                 </Link>
               </div> &nbsp;
-              <div className="hidden md:inline-block">
-                <a href="/login" className="py-2 px-4 text-white bg-indigo-600 hover:bg-indigo-700 rounded-md shadow">
-                    Login
-                </a>
-              </div>
           </div>
       </nav>
   )

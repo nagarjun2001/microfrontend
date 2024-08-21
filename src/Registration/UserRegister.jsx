@@ -532,6 +532,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import NavbarReg from '../components/NavbarReg';
+import UserRegNavbar from '../Navbar/UserRegNav';
 
 export default function UserRegister() {
     const navigate = useNavigate();
@@ -544,14 +546,15 @@ export default function UserRegister() {
         password: "",
         confirmpassword: "",
         mobno: "",
-        childAge: ""
+        childAge: "",
+        acceptTerms: false // Added field for checkbox
     });
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, type, value, checked } = e.target;
         setFormData({
             ...formData,
-            [name]: value
+            [name]: type === 'checkbox' ? checked : value
         });
     };
 
@@ -566,7 +569,8 @@ export default function UserRegister() {
             formData.password &&
             formData.confirmpassword &&
             formData.mobno &&
-            formData.mobno.length === 10
+            formData.mobno.length === 10 &&
+            formData.acceptTerms
         ) {
             if (formData.password !== formData.confirmpassword) {
                 toast.warn("Passwords do not match.");
@@ -582,12 +586,14 @@ export default function UserRegister() {
                 toast.error("Registration failed. Please try again.");
             }
         } else {
-            toast.warn("Please fill out all fields correctly.");
+            toast.warn("Please fill out all fields correctly and accept the terms.");
         }
     };
 
     return (
-        <div className="flex h-screen">
+        <>
+            <UserRegNavbar />
+            <div className="flex">
             <div
                 className="w-1/2 bg-cover bg-center flex items-center justify-center"
                 style={{
@@ -619,10 +625,23 @@ export default function UserRegister() {
                                         className="bg-gray-50 w-full text-gray-700 text-sm px-4 py-3 rounded-md border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 transition duration-150 ease-in-out"
                                         placeholder={field.placeholder}
                                         value={formData[field.name]}
-                                        onChange={handleChange}
-                                    />
+                                        onChange={handleChange} />
                                 </div>
                             ))}
+                        </div>
+
+                        <div className="flex items-center mt-4">
+                            <input
+                                name="acceptTerms"
+                                type="checkbox"
+                                id="acceptTerms"
+                                className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                                checked={formData.acceptTerms}
+                                onChange={handleChange}
+                            />
+                            <label htmlFor="acceptTerms" className="ml-2 text-gray-700 text-sm">
+                                I agree to the <a href="/terms" className="text-blue-600 underline">Terms and Conditions</a>
+                            </label>
                         </div>
 
                         <div className="mt-6 text-center">
@@ -637,6 +656,6 @@ export default function UserRegister() {
                 </div>
             </div>
             <ToastContainer />
-        </div>
+        </div></>
     );
 }

@@ -1,453 +1,342 @@
+// // import React, { useEffect, useState } from 'react';
+// // import axios from 'axios';
+// // import { Link, useNavigate } from 'react-router-dom';
+// // import CNav from '../Navbar/CNav';
+// // import Loader from '../components/Loader'; // Assuming you have a Loader component
+// // import { FaUser } from 'react-icons/fa';
+
+// // function CreatorHome() {
+// //   const [creator, setCreator] = useState(null);
+// //   const [videos, setVideos] = useState([]);
+// //   const [loading, setLoading] = useState(true); // State for loading
+// //   const creatorid = sessionStorage.getItem("creatorid");
+// //   const navigate = useNavigate();
+
+// //   useEffect(() => {
+// //     if (creatorid) {
+// //       Promise.all([
+// //         axios.get(`http://localhost:1234/creator/${creatorid}`),
+// //         axios.get(`http://localhost:1234/video/creator/${creatorid}`)
+// //       ])
+// //       .then(([creatorRes, videosRes]) => {
+// //         setCreator(creatorRes.data);
+// //         setVideos(videosRes.data);
+// //       })
+// //       .catch(err => console.error('Error fetching data:', err))
+// //       .finally(() => setLoading(false));
+// //     }
+// //   }, [creatorid]);
+
+// //   const handleThumbnailClick = (videoId) => {
+// //     navigate(`/videodetails/${videoId}`);
+// //   };
+
+// //   if (loading) {
+// //     return <Loader />;
+// //   }
+
+// //   return (
+// //     <>
+// //       <CNav />
+// //       <div className="p-6 bg-gray-100 min-h-screen">
+// //         {/* Creator Information */}
+// //         {creator && (
+// //           <section className="container mx-auto mb-6 bg-white p-6 rounded-lg shadow-md">
+// //             <div className="flex items-center space-x-4">
+// //               <FaUser size={50} className="text-gray-600" />
+// //               <div>
+// //                 <h2 className="text-3xl font-semibold text-gray-900">{creator.name}</h2>
+// //                 <p className="text-gray-700 text-lg">Creator Name: {creator.creatorname}</p>
+// //                 <p className="text-gray-700 text-lg">Channel Name: {creator.channelname}</p>
+// //                 <p className="text-gray-700 text-lg">Email: {creator.email}</p>
+// //               </div>
+// //             </div>
+// //           </section>
+// //         )}
+
+// //         {/* Upload Button */}
+// //         <div className="container mx-auto mb-6 flex justify-center">
+// //           <Link to="/uploadvideo">
+// //             <button
+// //               className="bg-blue-500 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-600 transition-colors"
+// //             >
+// //               Upload New Video
+// //             </button>
+// //           </Link>
+// //         </div>
+
+// //         {/* Videos List */}
+// //         <section className="container mx-auto">
+// //           <h2 className="text-4xl font-bold text-gray-900 mb-6 text-center">
+// //             Explore Your Videos
+// //           </h2>
+// //           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+// //             {videos.length === 0 ? (
+// //               <p className="text-gray-600 text-center col-span-3">No videos available</p>
+// //             ) : (
+// //               videos.map((video) => (
+// //                 <div
+// //                   key={video.id}
+// //                   className="bg-white border border-gray-300 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+// //                   onClick={() => handleThumbnailClick(video.id)}
+// //                 >
+// //                   <img
+// //                     src={`data:image/jpeg;base64,${video.image}`} // Ensure `video.image` is a valid base64 string
+// //                     alt={video.title}
+// //                     className="w-full h-48 object-cover rounded-t-lg"
+// //                   />
+// //                   <div className="p-4">
+// //                     <h3 className="text-lg font-semibold text-gray-900 truncate">{video.title}</h3>
+// //                     <p className="text-gray-700 mt-1 truncate">{video.description}</p>
+// //                     <p className={`text-sm font-bold mt-2 ${video.status ? 'text-green-500' : 'text-red-500'}`}>
+// //                       {video.status ? 'Approved' : 'Rejected'}
+// //                     </p>
+// //                   </div>
+// //                 </div>
+// //               ))
+// //             )}
+// //           </div>
+// //         </section>
+// //       </div>
+// //     </>
+// //   );
+// // }
+
+// // export default CreatorHome;
+
 // import React, { useEffect, useState } from 'react';
 // import axios from 'axios';
+// import { Link, useNavigate } from 'react-router-dom';
+// import CNav from '../Navbar/CNav';
+// import Loader from '../components/Loader'; // Assuming you have a Loader component
+// import { FaUser } from 'react-icons/fa';
 
-// // Component to handle the creation and updating of a video
 // function CreatorHome() {
 //   const [creator, setCreator] = useState(null);
 //   const [videos, setVideos] = useState([]);
-//   const [newVideo, setNewVideo] = useState({
-//     title: '',
-//     description: '',
-//     file: null,
-//     agelevel: '',
-//     status: false,
-//     creator_id: '',
-//     category_id: '',
-//     category: '' // Add a category property
-//   });
-//   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-
+//   const [loading, setLoading] = useState(true); // State for loading
 //   const creatorid = sessionStorage.getItem("creatorid");
+//   const navigate = useNavigate();
 
 //   useEffect(() => {
-//     axios.get(`http://localhost:1234/creator/${creatorid}`)
-//       .then(res => setCreator(res.data))
-//       .catch(err => console.error('Error fetching creator data:', err));
-
-//     axios.get(`http://localhost:1234/video/creator/${creatorid}`)
-//       .then(res => setVideos(res.data))
-//       .catch(err => console.error('Error fetching videos:', err));
+//     if (creatorid) {
+//       Promise.all([
+//         axios.get(`http://localhost:1234/creator/${creatorid}`),
+//         axios.get(`http://localhost:1234/video/creator/${creatorid}`)
+//       ])
+//       .then(([creatorRes, videosRes]) => {
+//         setCreator(creatorRes.data);
+//         setVideos(videosRes.data);
+//       })
+//       .catch(err => console.error('Error fetching data:', err))
+//       .finally(() => setLoading(false));
+//     }
 //   }, [creatorid]);
 
-//   const handleUpload = () => {
-//     const formData = new FormData();
-//     formData.append('title', newVideo.title);
-//     formData.append('description', newVideo.description);
-//     formData.append('agelevel', newVideo.agelevel);
-//     formData.append('creator_id', parseInt(newVideo.creator_id,10));
-//     formData.append('category_id', parseInt(newVideo.category_id,10));
-//     formData.append('file', newVideo.file);
-
-//     axios.post('http://localhost:1234/video/upload', formData)
-//       .then(() => {
-//         setVideos([...videos, newVideo]);
-//         setNewVideo({
-//           title: '',
-//           description: '',
-//           file: null,
-//           agelevel: '',
-//           status: false,
-//           creator_id: creatorid,
-//           category_id: ''
-//         }); 
-//         setIsUploadModalOpen(false);
-//       })
-//       .catch(err => console.error('Error uploading video:', err));
+//   const handleThumbnailClick = (videoId) => {
+//     navigate(`/videodetails/${videoId}`);
 //   };
 
-//   const handleFileChange = (e) => {
-//     setNewVideo({ ...newVideo, file: e.target.files[0] });
-//   };
-
-//   const handleCategoryChange = (e) => {
-//     const selectedCategory = e.target.value;
-//     setNewVideo({ ...newVideo, category: selectedCategory, category_id: getCategoryID(selectedCategory) });
-//   };
-
-//   const getCategoryID = (category) => {
-//     switch (category) {
-//       case 'Writing':
-//         return 1;
-//       case 'Science':
-//         return 2;
-//       case 'Rhymes':
-//         return 3;
-//       case 'Cartoons':
-//         return 4;
-//       default:
-//         return 0;
-//     }
-//   };
-
-//   const handleLogout = () => {
-//     sessionStorage.removeItem("creatorid");
-//     window.location.href = "/login";
-//   };
+//   if (loading) {
+//     return <Loader />;
+//   }
 
 //   return (
-//     <div className="p-6 bg-gray-100 min-h-screen">
-//       <header className="bg-blue-600 text-white p-4 mb-6">
-//         <h1 className="text-3xl font-bold">Creator Dashboard</h1>
-//       </header>
+//     <>
+//       <CNav />
+//       <div className="p-1 min-h-screen flex flex-col items-center">
+//         {/* Creator Information */}
+//         {creator && (
+//           <section className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl mb-8">
+//             <div className="flex items-center space-x-6">
+//               <FaUser size={60} className="text-gray-600" />
+//               <div>
+//                 <h2 className="text-4xl font-semibold text-gray-900 mb-2">{creator.name}</h2>
+//                 <p className="text-gray-700 text-lg mb-1">Creator Name: {creator.creatorname}</p>
+//                 <p className="text-gray-700 text-lg mb-1">Channel Name: {creator.channelname}</p>
+//                 <p className="text-gray-700 text-lg">Email: {creator.email}</p>
+//               </div>
+//             </div>
+//           </section>
+//         )}
 
-//       {creator && (
-//         <div className="mb-6">
-//           <h2 className="text-2xl font-semibold">{creator.name}</h2>
-//           <p className="text-gray-600">Email: {creator.email}</p>
-//           <p className="text-gray-600">Creator Name: {creator.creatorname}</p>
-//           <p className="text-gray-600">Channel Name: {creator.channelname}</p>
+//         {/* Upload Button */}
+//         <div className="mb-8">
+//           <Link to="/uploadvideo">
+//             <button
+//               className="bg-blue-500 text-white px-8 py-4 rounded-lg shadow-lg hover:bg-blue-600 transition-colors duration-300"
+//             >
+//               Upload New Video
+//             </button>
+//           </Link>
 //         </div>
-//       )}
 
-//       <button
-//         onClick={() => setIsUploadModalOpen(true)}
-//         className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors"
-//       >
-//         Upload New Video
-//       </button>
-
-//       <div className="my-6">
-//         <h2 className="text-2xl font-semibold mb-4">Your Videos</h2>
-//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-//           {videos.length === 0 ? (
-//             <p>No videos available</p>
-//           ) : (
-//             videos.map((video) => (
-//               <div key={video.id} className="bg-white p-4 rounded-lg shadow-md">
-//                 <h3 className="text-xl font-bold mb-2">{video.title}</h3>
-//                 <p className="text-gray-600 mb-2">{video.description}</p>
-//                 <video autoPlay muted className="w-full mb-4 border border-gray-300 rounded-lg">
-//                   <source src={`data:video/mp4;base64,${video.videofile}`} type="video/mp4" />
-//                   Your browser does not support the video tag.
-//                 </video>
-//               </div>
-//             ))
-//           )}
-//         </div>
-//       </div>
-
-//       {isUploadModalOpen && (
-//         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-//           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-//             <h2 className="text-xl font-bold mb-4">Upload New Video</h2>
-//             <form>
-//               <div className="mb-4">
-//                 <label className="block text-gray-700 mb-2">Title</label>
-//                 <input
-//                   type="text"
-//                   value={newVideo.title}
-//                   onChange={(e) => setNewVideo({ ...newVideo, title: e.target.value })}
-//                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
-//                   required
-//                 />
-//               </div>
-//               <div className="mb-4">
-//                 <label className="block text-gray-700 mb-2">Description</label>
-//                 <textarea
-//                   value={newVideo.description}
-//                   onChange={(e) => setNewVideo({ ...newVideo, description: e.target.value })}
-//                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
-//                   required
-//                 />
-//               </div>
-//               <div className="mb-4">
-//                 <label className="block text-gray-700 mb-2">Video File</label>
-//                 <input
-//                   type="file"
-//                   accept="video/*"
-//                   onChange={handleFileChange}
-//                   className="w-full"
-//                   required
-//                 />
-//               </div>
-//               <div className="mb-4">
-//                 <label className="block text-gray-700 mb-2">Age Level</label>
-//                 <select
-//                   value={newVideo.agelevel}
-//                   onChange={(e) => setNewVideo({ ...newVideo, agelevel: e.target.value })}
-//                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
-//                   required
+//         {/* Videos List */}
+//         <section className="w-full p-9">
+//           <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+//             Explore Your Videos
+//           </h2>
+//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+//             {videos.length === 0 ? (
+//               <p className="text-gray-600 font-bold text-center col-span-3">No videos available</p>
+//             ) : (
+//               videos.map((video) => (
+//                 <div
+//                   key={video.id}
+//                   className="bg-white mb-10 border border-gray-300 rounded-lg shadow-lg hover:shadow-xl transition-shadow-lg cursor-pointer"
+//                   onClick={() => handleThumbnailClick(video.id)}
 //                 >
-//                   <option value="">Select Age Level</option>
-//                   <option value="Pre-School (Ages 4 and under)">Pre-School (Ages 4 and under)</option>
-//                   <option value="Younger (Ages between 5-8)">Younger (Ages 5-8)</option>
-//                   <option value="Older (Ages between 9-12)">Older (9-12)</option>
-//                 </select>
-//               </div>
-//               <div className="mb-4">
-//                 <label className="block text-gray-700 mb-2">Category</label>
-//                 <select
-//                   value={newVideo.category}
-//                   onChange={handleCategoryChange}
-//                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
-//                   required
-//                 >
-//                   <option value="">Select Category</option>
-//                   <option value="Rhymes">Rhymes</option>
-//                   <option value="Cartoons">Cartoons</option>
-//                   <option value="Songs">Songs</option>
-//                   <option value="Science">Science</option>
-//                 </select>
-//               </div>
-//               <div className="text-right">
-//                 <button
-//                   type="button"
-//                   onClick={handleUpload}
-//                   className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
-//                 >
-//                   Upload
-//                 </button>
-//                 <button
-//                   type="button"
-//                   onClick={() => setIsUploadModalOpen(false)}
-//                   className="ml-2 bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors"
-//                 >
-//                   Cancel
-//                 </button>
-//               </div>
-//             </form>
+//                   <img
+//                     src={`data:image/jpeg;base64,${video.image}`} // Ensure `video.image` is a valid base64 string
+//                     alt={video.title}
+//                     className="w-full h-56 object-cover rounded-t-lg"
+//                   />
+//                   <div className="p-4">
+//                     <h3 className="text-xl font-semibold text-gray-900 truncate mb-1">{video.title}</h3>
+//                     <p className="text-gray-700 mb-2 truncate">{video.description}</p>
+//                     <p className={`text-sm font-semibold ${video.status ? 'text-green-600' : 'text-red-600'}`}>
+//                       {video.status ? 'Approved' : 'Rejected'}
+//                     </p>
+//                   </div>
+//                 </div>
+//               ))
+//             )}
 //           </div>
-//         </div>
-//       )}
-
-//       <div className="text-center mt-6">
-//         <button
-//           onClick={handleLogout}
-//           className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors"
-//         >
-//           Logout
-//         </button>
+//         </section>
 //       </div>
-//     </div>
+//     </>
 //   );
 // }
 
 // export default CreatorHome;
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import CNav from '../Navbar/CNav';
+import Loader from '../components/Loader'; // Assuming you have a Loader component
+import { FaUser } from 'react-icons/fa';
 
-// Component to handle the creation and updating of a video
 function CreatorHome() {
   const [creator, setCreator] = useState(null);
   const [videos, setVideos] = useState([]);
-  const [newVideo, setNewVideo] = useState({
-    title: '',
-    description: '',
-    file: null,
-    agelevel: '',
-    status: false,
-    creator_id: '',
-    category_id: '', // Ensure this is set to a valid integer or empty string
-    category: '' // Add a category property
-  });
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-
+  const [loading, setLoading] = useState(true); // State for loading
   const creatorid = sessionStorage.getItem("creatorid");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (creatorid) {
-      axios.get(`http://localhost:1234/creator/${creatorid}`)
-        .then(res => setCreator(res.data))
-        .catch(err => console.error('Error fetching creator data:', err));
-
-      axios.get(`http://localhost:1234/video/creator/${creatorid}`)
-        .then(res => setVideos(res.data))
-        .catch(err => console.error('Error fetching videos:', err));
+      Promise.all([
+        axios.get(`http://localhost:1234/creator/${creatorid}`),
+        axios.get(`http://localhost:1234/video/creator/${creatorid}`)
+      ])
+      .then(([creatorRes, videosRes]) => {
+        setCreator(creatorRes.data);
+        setVideos(videosRes.data);
+      })
+      .catch(err => console.error('Error fetching data:', err))
+      .finally(() => setLoading(false));
     }
   }, [creatorid]);
 
-  const handleUpload = () => {
-    const formData = new FormData();
-    formData.append('title', newVideo.title);
-    formData.append('description', newVideo.description);
-    formData.append('agelevel', newVideo.agelevel);
-    formData.append('creator_id', creatorid ? parseInt(creatorid, 10) : ''); // Ensure this is an integer
-    formData.append('category_id', newVideo.category_id ? parseInt(newVideo.category_id, 10) : ''); // Ensure this is an integer
-    formData.append('file', newVideo.file);
-
-    axios.post('http://localhost:1234/video/upload', formData)
-      .then(() => {
-        setVideos([...videos, newVideo]);
-        setNewVideo({
-          title: '',
-          description: '',
-          file: null,
-          agelevel: '',
-          status: false,
-          creator_id: creatorid || '', // Ensure this is correctly set
-          category_id: '' // Ensure this is correctly set
-        });
-        setIsUploadModalOpen(false);
-      })
-      .catch(err => console.error('Error uploading video:', err));
+  const handleThumbnailClick = (videoId) => {
+    navigate(`/videodetails/${videoId}`);
   };
 
-  const handleFileChange = (e) => {
-    setNewVideo({ ...newVideo, file: e.target.files[0] });
-  };
-
-  const handleCategoryChange = (e) => {
-    const selectedCategory = e.target.value;
-    const categoryId = getCategoryID(selectedCategory);
-    setNewVideo({ ...newVideo, category: selectedCategory, category_id: categoryId });
-  };
-
-  const getCategoryID = (category) => {
-    switch (category) {
-      case 'Writing':
-        return 1;
-      case 'Science':
-        return 2;
-      case 'Rhymes':
-        return 3;
-      case 'Cartoons':
-        return 4;
-      default:
-        return ''; // Default to empty string or 0, depending on your backend handling
-    }
-  };
-
-  const handleLogout = () => {
-    sessionStorage.removeItem("creatorid");
-    window.location.href = "/login";
-  };
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <header className="bg-blue-600 text-white p-4 mb-6">
-        <h1 className="text-3xl font-bold">Creator Dashboard</h1>
-      </header>
-
-      {creator && (
-        <div className="mb-6">
-          <h2 className="text-2xl font-semibold">{creator.name}</h2>
-          <p className="text-gray-600">Email: {creator.email}</p>
-          <p className="text-gray-600">Creator Name: {creator.creatorname}</p>
-          <p className="text-gray-600">Channel Name: {creator.channelname}</p>
+    <>
+      <CNav />
+      <div className="p-6 min-h-screen flex flex-col items-center  relative">
+        {/* Upload Button */}
+        <div className="absolute top-6 right-6">
+          <Link to="/uploadvideo">
+            <button
+              className="bg-indigo-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-blue-600 transition-colors duration-300"
+            >
+              Upload New Video
+            </button>
+          </Link>
         </div>
-      )}
 
-      <button
-        onClick={() => setIsUploadModalOpen(true)}
-        className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors"
-      >
-        Upload New Video
-      </button>
+        {/* Creator Information */}
+        {creator && (
+          <section className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl mb-8">
+            <div className="flex items-center space-x-6">
+              {/* <FaUser size={60} className="text-gray-600" /> */}
+              <span className="text-gray-600 text-4xl">👤</span>
+              <div>
+                <h2 className="text-4xl font-semibold text-gray-900 mb-2">{creator.name}</h2>
+                <p className="text-gray-700 text-lg mb-1">Creator Name: {creator.creatorname}</p>
+                <p className="text-gray-700 text-lg mb-1">Channel Name: {creator.channelname}</p>
+                <p className="text-gray-700 text-lg">Email: {creator.email}</p>
+              </div>
+            </div>
+          </section>
+        )}
 
-      <div className="my-6">
-        <h2 className="text-2xl font-semibold mb-4">Your Videos</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {videos.length === 0 ? (
-            <p>No videos available</p>
-          ) : (
-            videos.map((video) => (
-              <div key={video.id} className="bg-white p-4 rounded-lg shadow-md">
-                <h3 className="text-xl font-bold mb-2">{video.title}</h3>
-                <p className="text-gray-600 mb-2">{video.description}</p>
-                <video autoPlay muted className="w-full mb-4 border border-gray-300 rounded-lg">
-                  <source src={`data:video/mp4;base64,${video.videofile}`} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-            ))
-          )}
-        </div>
-      </div>
+        {/* Videos List */}
+        <section className="w-full p-3">
+          <hr />
+          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+            Your Videos
+          </h2>
+          <div className="grid p-12 rounded-2xl grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {videos.length === 0 ? (
+              <>
+                  <p className="text-gray-600 font-bold text-center col-span-3">You haven't uploaded any videos... Upload Now!!!</p>
+                  <img src="https://cdni.iconscout.com/illustration/premium/thumb/video-error-illustration-download-in-svg-png-gif-file-formats--connection-page-404-failure-pack-seo-web-illustrations-6905777.png?f=webp" 
+                  className='ml-80 mb-20  text-gray-600 font-bold text-center col-span-3'
+                  alt="" />
+              </>
+            ) : (
+              videos.map((video) => (
+                <div
+                  key={video.id}
+                  className="border shadow-lg transform transition-transform hover:scale-105 hover:shadow-xl cursor-pointer bg-white border border-gray-300 rounded-xl shadow-lg transform transition-transform hover:scale-105 hover:shadow-xl cursor-pointer"
+                  onClick={() => handleThumbnailClick(video.id)}
+                >
+                  <div className="relative bg-gray-900">
+                <img
+                    src={`data:image/jpeg;base64,${video.image}`}
+                    alt={video.title}
+                    className="w-full h-48 object-cover"
+                />
+                <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-10 h-10 text-white"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M14.752 11.168l-5.4 3.12a.75.75 0 01-1.1-.642v-6.24a.75.75 0 011.1-.642l5.4 3.12a.75.75 0 010 1.284z"
+                        />
+                    </svg>
+                </div>
+            </div>
 
-      {isUploadModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-            <h2 className="text-xl font-bold mb-4">Upload New Video</h2>
-            <form>
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-2">Title</label>
-                <input
-                  type="text"
-                  value={newVideo.title}
-                  onChange={(e) => setNewVideo({ ...newVideo, title: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-2">Description</label>
-                <textarea
-                  value={newVideo.description}
-                  onChange={(e) => setNewVideo({ ...newVideo, description: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-2">Video File</label>
-                <input
-                  type="file"
-                  accept="video/*"
-                  onChange={handleFileChange}
-                  className="w-full"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-2">Age Level</label>
-                <select
-                  value={newVideo.agelevel}
-                  onChange={(e) => setNewVideo({ ...newVideo, agelevel: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  required
-                >
-                  <option value="">Select Age Level</option>
-                  <option value="Pre-School (Ages 4 and under)">Pre-School (Ages 4 and under)</option>
-                  <option value="Younger (Ages between 5-8)">Younger (Ages 5-8)</option>
-                  <option value="Older (Ages between 9-12)">Older (9-12)</option>
-                </select>
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-2">Category</label>
-                <select
-                  value={newVideo.category}
-                  onChange={handleCategoryChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  required
-                >
-                  <option value="">Select Category</option>
-                  <option value="Writing">Writing</option>
-                  <option value="Science">Science</option>
-                  <option value="Rhymes">Rhymes</option>
-                  <option value="Cartoons">Cartoons</option>
-                </select>
-              </div>
-              <div className="text-right">
-                <button
-                  type="button"
-                  onClick={handleUpload}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
-                >
-                  Upload
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsUploadModalOpen(false)}
-                  className="ml-2 bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
+                  <div className="p-4 bg-gray-100">
+                    <h3 className="text-xl font-semibold text-gray-900 truncate mb-1">{video.title}</h3>
+                    <p className="text-gray-700 mb-2 truncate">{video.description}</p>
+                    <p className={`text-sm font-semibold ${video.status ? 'text-green-600' : 'text-red-600'}`}>
+                      {video.status ? 'Approved' : 'Rejected'}
+                    </p>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
-        </div>
-      )}
-
-      <div className="text-center mt-6">
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors"
-        >
-          Logout
-        </button>
+        </section>
       </div>
-    </div>
+    </>
   );
 }
 

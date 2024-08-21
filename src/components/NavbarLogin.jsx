@@ -45,13 +45,13 @@ export default () => {
               </div>
               <div className={`flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 ${ state ? 'block' : 'hidden'}`}>
                   <ul className="justify-center items-center space-y-8 md:flex md:space-x-6 md:space-y-0">
-                      {
-                        <div class="bg-white justify-center flex px-1 py-1 rounded-full  border-blue-500 overflow-hidden max-w-md mx-auto font-[sans-serif]">
+                      {/* {
+                        <div class="bg-white flex px-1 py-1 rounded-full  border-blue-500 overflow-hidden max-w-md mx-auto font-[sans-serif]">
                         <input type='text' placeholder="How to draw a perfect 'O'..." className="w-full outline-none bg-white text-sm" />
                         <button type='button'
                           class="bg-blue-600 hover:bg-blue-700 transition-all text-white text-sm rounded-full px-5 py-1.5">Search</button>
                       </div>
-                      }
+                      } */}
                   </ul>
               </div>
               <div className="hidden md:inline-block">
@@ -59,11 +59,6 @@ export default () => {
                     Sign up
                 </Link>
               </div> &nbsp;
-              <div className="hidden md:inline-block">
-                <a href="/login" className="py-2 px-4 text-white bg-indigo-600 hover:bg-indigo-700 rounded-md shadow">
-                    Login
-                </a>
-              </div>
           </div>
       </nav>
   )
