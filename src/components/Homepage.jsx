@@ -22,14 +22,12 @@ const Homepage = () => {
 
         <section className="bg-white py-12">
             <div className="container mx-auto px-4 flex flex-col lg:flex-row gap-8">
-                {/* Video Column */}
                 <div className="flex-1">
                     <video autoPlay loop muted className="w-full h-full object-cover rounded-lg shadow-lg">
                         <source src="//videos.ctfassets.net/9uhkiji6mhey/1ibSVLGykWcCMtj5eb2jUd/730a847cf56465619788ea1fc1f244b0/GoogleKidsSpace-Case-04.mp4" />
                     </video>
                 </div>
                 
-                {/* Text Column */}
                 <div className="flex-1 flex flex-col justify-center">
                     <h2 className="text-3xl font-bold mb-4">Explore More Learning Opportunities!</h2>
                     <p className="text-lg mb-4">Dive into our latest content designed to make learning fun and engaging for kids. Our platform offers a range of interactive and educational videos that not only entertain but also educate. From creative storytelling to exciting educational challenges, there’s something for every curious mind.</p>
@@ -38,10 +36,8 @@ const Homepage = () => {
             </div>
         </section>
 
-        {/* Two-Column Section with Image and Text (Opposite Direction) */}
         <section className="bg-white py-12">
             <div className="container mx-auto px-4 flex flex-col lg:flex-row-reverse gap-8">
-                {/* Image Column */}
                 <div className="flex-1">
                     <img
                         src="https://images.ctfassets.net/9uhkiji6mhey/1KtGLafIooNgseaCzXbgl2/9ebc025154192ce65485217f24d42d76/Hero_Landscape.png"
@@ -50,7 +46,6 @@ const Homepage = () => {
                     />
                 </div>
 
-                {/* Text Column */}
                 <div className="flex-1 flex flex-col justify-center">
                     <h2 className="text-3xl font-bold mb-4">Engage with New Features!</h2>
                     <p className="text-lg mb-4">Discover the latest features and updates on our platform. We're constantly working to bring you fresh content and new ways to interact with our educational resources.</p>
@@ -59,10 +54,8 @@ const Homepage = () => {
             </div>
         </section>
 
-        {/* Two-Column Section with Image and Text */}
         <section className="bg-white py-12">
             <div className="container mx-auto px-4 flex flex-col lg:flex-row gap-8">
-                {/* Image Column */}
                 <div className="flex-1">
                     <img
                         src="https://images.ctfassets.net/9uhkiji6mhey/1hL9r3U8qx3BtN6FIjMqAd/290716c9274e4e626d31c59ecba74267/YTkidsv2-content-10.jpg"
@@ -71,7 +64,6 @@ const Homepage = () => {
                     />
                 </div>
 
-                {/* Text Column */}
                 <div className="flex-1 flex flex-col justify-center">
                     <h2 className="text-3xl font-bold mb-4">Discover More Content!</h2>
                     <p className="text-lg mb-4">Explore our diverse range of videos and interactive content designed to keep kids engaged and learning. Our curated content offers something for everyone, from captivating stories to educational challenges.</p>
@@ -80,17 +72,14 @@ const Homepage = () => {
             </div>
         </section>
 
-        {/* Two-Column Section with Video and Text (Opposite Direction) */}
         <section className="bg-white py-12">
             <div className="container mx-auto px-4 flex flex-col lg:flex-row-reverse gap-8">
-                {/* Video Column */}
                 <div className="flex-1">
                     <video autoPlay loop muted className="w-full h-full object-cover rounded-lg shadow-lg">
                         <source src="https://videos.ctfassets.net/9uhkiji6mhey/5lqWVOA6hhFwmWRnrIdKAU/6add1ac0fd7a41bfd270e88c050e984b/GoogleKidsSpace-Case-08.mp4" />
                     </video>
                 </div>
                 
-                {/* Text Column */}
                 <div className="flex-1 flex flex-col justify-center">
                     <h2 className="text-3xl font-bold mb-4">Experience Interactive Learning!</h2>
                     <p className="text-lg mb-4">Our interactive content helps kids learn through play and exploration. Each video is crafted to encourage curiosity and support educational growth. Whether it’s engaging animations or thought-provoking challenges, we aim to make learning an adventure.</p>
@@ -99,7 +88,6 @@ const Homepage = () => {
             </div>
         </section>
 
-        {/* Kid-Friendly Footer */}
         {/* <footer className="bg-yellow-300 text-dark-900 py-12">
             <div className="container mx-auto px-4 text-center">
                 <h3 className="text-3xl font-bold mb-4">Join the Fun! Learn and Educate yourself</h3>

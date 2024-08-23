@@ -1,98 +1,12 @@
-// import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
-// import { useParams } from 'react-router-dom';
-// import { toast } from 'react-toastify';
-// import Loader from '../components/Loader';
-// import UNav from '../Navbar/UNav';
-
-// const UVideoDetail = () => {
-//     const { videoId } = useParams();
-//     const [video, setVideo] = useState(null);
-//     const userid = sessionStorage.getItem("userid");
-
-//     useEffect(() => {
-//         axios.get(`http://localhost:1234/video/${videoId}`)
-//             .then((res) => {
-//                 setVideo(res.data);
-//             })
-//             .catch((err) => {
-//                 toast.error("Error fetching video details");
-//                 console.error(err);
-//             });
-//     }, [videoId]);
-
-//     const handleBlockCategory = async () => {
-//         try {
-//             await axios.post(`http://localhost:1234/user/${userid}/block/category/${video.category.category_id}`);
-//             toast.success("Category blocked successfully!");
-//         } catch (error) {
-//             toast.error("Error blocking category");
-//         }
-//     };
-
-//     const handleBlockVideo = async () => {
-//         try {
-//             await axios.post(`http://localhost:1234/user/${userid}/block/${videoId}`);
-//             toast.success("Video blocked successfully!");
-//         } catch (error) {
-//             toast.error("Error blocking video");
-//         }
-//     };
-
-//     if (!video) return <Loader />;
-
-//     return (
-//         <><UNav /><div className=" p-6">
-//             <span className=" rounded-md shadow-lg mb-8">
-//                 <h1 className="text-4xl  font-bold">Video Details</h1>
-//             </span>
-
-//             <div className=" p-8 rounded-lg shadow-lg">
-//                 {video.videofile ? (
-//                     <video
-//                         className="w-full h-full object-cover rounded-lg shadow-md mb-4"
-//                         controls
-//                         autoPlay
-//                     >
-//                         <source src={`data:video/mp4;base64,${video.videofile}`} type="video/mp4" />
-//                         Your browser does not support the video tag.
-//                     </video>
-//                 ) : (
-//                     <p className="text-center text-gray-400">No video file available</p>
-//                 )}
-
-//                 <h2 className="text-3xl font-semibold mb-2">{video.title}</h2>
-//                 <p className="text-gray-400 mb-2"><span className="font-semibold">Description:</span> {video.description || "No description available"}</p>
-//                 <p className="text-gray-400 mb-2"><span className="font-semibold">Age Level:</span> {video.agelevel || "Not specified"}</p>
-//                 <p className="text-gray-400 mb-4"><span className="font-semibold">Category:</span> {video.category.category_name || "Uncategorized"}</p>
-
-//                 <div className="flex space-x-4">
-//                     <button
-//                         onClick={handleBlockCategory}
-//                         className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500 transition-colors duration-300"
-//                     >
-//                         Block Category
-//                     </button>
-//                     <button
-//                         onClick={handleBlockVideo}
-//                         className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500 transition-colors duration-300"
-//                     >
-//                         Block Video
-//                     </button>
-//                 </div>
-//             </div>
-//         </div></>
-//     );
-// };
-
-// export default UVideoDetail;
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import UNav from '../Navbar/UNav';
+import VideoCard from './VideoCard';
+import LoaderSmall from '../components/LoaderSmall';
+import { FaExclamation, FaFlag, FaThumbsDown, FaThumbsUp } from 'react-icons/fa';
 
 const UVideoDetail = () => {
     const { videoId } = useParams();
@@ -103,13 +17,17 @@ const UVideoDetail = () => {
     const [newComment, setNewComment] = useState('');
     const userid = sessionStorage.getItem("userid");
     const navigate = useNavigate();
+    const [videodata, setVideodata] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('All');
+    const [userdata, setUserdata] = useState({});
+    const [videoload, setVideoload] = useState(true);
+    const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        // Fetch video details
         axios.get(`http://localhost:1234/video/${videoId}`)
             .then((res) => {
                 setVideo(res.data);
-                // fetchComments(res.data.id);  // Fetch comments when video data is available
+                // fetchComments(res.data.id);
             })
             .catch((err) => {
                 toast.error("Error fetching video details");
@@ -137,110 +55,157 @@ const UVideoDetail = () => {
         }
     };
 
-
     const handleGoBack = () => {
-        navigate(-1); // Navigate back to the previous page
-      };
+        navigate(-1);
+    };
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:1234/video/approved")
+            .then((res) => {
+                setVideoload(false);
+                setVideodata(res.data);
+            })
+            .catch((error) => {
+                console.error("There was an error fetching the video data:", error);
+            });
+    }, []);
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:1234/category/all")
+            .then((res) => {
+                setCategories(res.data);
+            })
+            .catch((error) => {
+                toast.error("There was an error fetching the Category details", error);
+            });
+    }, []);
+
+    const handleLike = () => {
+        setIsLiked(true)
+        setIsDisliked(false)
+    }
+    const handleDislike = () => {
+        setIsDisliked(true)
+        setIsLiked(false)
+    }
 
     if (!video) return <Loader />;
+
+    const filteredVideos = videodata.filter(video => {
+        const isBlockedVideo = userdata.blockedvideosid?.includes(video.id);
+        const isBlockedCategory = userdata.blockedcatid?.includes(video.category.category_name);
+        const isMatchingCategory = selectedCategory === 'All' || video.category.category_name === selectedCategory;
+        return !isBlockedVideo && !isBlockedCategory && isMatchingCategory;
+    });
 
     return (
         <>
             <UNav />
-            <div className="p-6 max-w-screen-xl mx-auto">
-                <div className="bg-white p-4 rounded-lg shadow-lg">
-                <button
-          onClick={handleGoBack}
-          className="relative mb-3 bg-gray-500 text-white px-6 py-3 rounded-md shadow-md hover:bg-gray-600 transition-colors duration-300"
-        >
-          Go Back
-        </button>
-                    {/* Video Player */}
-                    <div className="relative">
-                        {video.videofile ? (
-                            <video
-                                className="w-full h-auto rounded-lg shadow-md mb-4"
-                                controls
-                                autoPlay
-                            >
-                                <source src={`data:video/mp4;base64,${video.videofile}`} type="video/mp4" />
-                                Your browser does not support the video tag.
-                            </video>
-                        ) : (
-                            <p className="text-center text-gray-400">No video file available</p>
-                        )}
-                    </div>
-
-                    {/* Video Title and Description */}
-                    <h1 className="text-3xl font-bold mb-2">{video.title}</h1>
-                    <p className="text-gray-600 mb-4">{video.description || "No description available"}</p>
-                    <p className="text-gray-600 mb-4"><span className="font-semibold">Age Level:</span> {video.agelevel || "Not specified"}</p>
-                    <p className="text-gray-600 mb-4"><span className="font-semibold">Category:</span> {video.category.category_name || "Uncategorized"}</p>
-
-                    {/* Like/Dislike and Block Buttons */}
-                    <div className="flex items-center space-x-4 mb-6">
+            <div className="flex">
+                <div className="w-2/3 p-6">
+                    <div className=" p-4 rounded-xl">
                         <button
-                            // onClick={handleLike}
-                            className={`flex items-center space-x-2 px-4 py-2 rounded-md ${isLiked ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'} hover:bg-blue-500 transition-colors duration-300`}
+                            onClick={handleGoBack}
+                            className="relative mb-3 bg-black/80 text-white px-5 py-2 rounded-md shadow-md hover:bg-gray-600 transition-colors duration-300"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7 7 7-7M5 9l7-7 7 7" />
-                            </svg>
-                            <span>Like</span>
+                            Go Back
                         </button>
-                        <button
-                            // onClick={handleDislike}
-                            className={`flex items-center space-x-2 px-4 py-2 rounded-md ${isDisliked ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-600'} hover:bg-red-500 transition-colors duration-300`}
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7-7-7 7M19 15l-7 7-7-7" />
-                            </svg>
-                            <span>Dislike</span>
-                        </button>
-                        <button
-                            onClick={handleBlockCategory}
-                            className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500 transition-colors duration-300"
-                        >
-                            Block Category
-                        </button>
-                        <button
-                            onClick={handleBlockVideo}
-                            className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500 transition-colors duration-300"
-                        >
-                            Block Video
-                        </button>
-                    </div>
-
-                    {/* Comments Section */}
-                    <div className="mt-8">
-                        <h2 className="text-2xl font-semibold mb-4">Comments</h2>
-                        <div className="space-y-4 mb-6">
-                            {comments.length > 0 ? (
-                                comments.map((comment) => (
-                                    <div key={comment.id} className="bg-gray-100 p-4 rounded-lg shadow-md">
-                                        <p className="text-gray-800 font-semibold">{comment.userName}</p>
-                                        <p className="text-gray-600">{comment.text}</p>
-                                    </div>
-                                ))
+                        <div className="relative rounded-xl">
+                            {video.videofile ? (
+                                <video
+                                    className="w-full flex justify-center item-center rounded-xl shadow-md mb-4"
+                                    controls
+                                    autoPlay
+                                >
+                                    <source src={`data:video/mp4;base64,${video.videofile}`} type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                </video>
                             ) : (
-                                <p className="text-gray-600">No comments yet</p>
+                                <p className="text-center text-gray-400">No video file available</p>
                             )}
                         </div>
-                        <div className="flex flex-col space-y-4">
-                            <textarea
-                                value={newComment}
-                                // onChange={(e) => setNewComment(e.target.value)}
-                                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-                                rows="4"
-                                placeholder="Add a comment..."
-                            />
+
+                        <h1 className="text-2xl font-bold mb-2">{video.title}</h1>
+                        <p className="text-gray-600 mb-4">{video.description || "No description available"}</p>
+                        <p className="text-gray-600 mb-4"><span className="font-semibold">Age Level:</span> {video.agelevel || "Not specified"}</p>
+                        <p className="text-gray-600 mb-4"><span className="font-semibold">Category:</span> {video.category.category_name || "Uncategorized"}</p>
+
+                        <div className="flex items-center space-x-4 mb-6">
                             <button
-                                // onClick={handleAddComment}
-                                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-500 transition-colors duration-300"
+                                onClick={handleLike}
+                                className={`flex items-center space-x-2 px-2 py-2 rounded-md ${isLiked ? 'shadow-sm shadow-black/80 text-white' : ' text-black/80 '} hover:bg-gray-100 text-black/80 transition-colors duration-300`}
                             >
-                                Add Comment
+                                <FaThumbsUp />
+                                <span>Like</span>
+                            </button>
+                            <button
+                                onClick={handleDislike}
+                                className={`flex items-center space-x-2 px-2 py-2 rounded-md ${isDisliked ? 'shadow-sm shadow-black/80 text-white' : ' text-black/80 '} hover:bg-gray-100 text-black/80 transition-colors duration-300`}
+                            >
+                                <FaThumbsDown />
+                                <span>Dislike</span>
+                            </button>
+                            <button
+                                onClick={handleBlockCategory}
+                                className="flex items-center space-x-2 px-2 py-2 rounded-md hover:scale-105 transition-colors duration-300"
+                            >
+                                <FaFlag />
+                                <span>Block Category</span>
+                            </button>
+                            <button
+                                onClick={handleBlockVideo}
+                                className="flex items-center space-x-2 px-2 py-2 rounded-md hover:scale-105 transition-colors duration-300"
+                            >
+                                <FaExclamation />
+                                <span>Report Video</span>
                             </button>
                         </div>
+
+                        <div className="mt-8">
+                            <h2 className="text-xl font-semibold mb-4">Comments</h2>
+                            <div className="space-y-4 mb-6">
+                                {comments.length > 0 ? (
+                                    comments.map((comment) => (
+                                        <div key={comment.id} className="bg-gray-100 p-4 rounded-lg shadow-md">
+                                            <p className="text-gray-800 font-semibold">{comment.userName}</p>
+                                            <p className="text-gray-600">{comment.text}</p>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p className="text-gray-600">No comments yet</p>
+                                )}
+                            </div>
+                            <div className="flex flex-col space-y-4">
+                                <textarea
+                                    // value={newComment}
+                                    // onChange={(e) => setNewComment(e.target.value)}
+                                    className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                    rows="4"
+                                    placeholder="Add a comment..."
+                                />
+                                <button
+                                    // onClick={handleAddComment}
+                                    className="bg-black/80 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors duration-300"
+                                >
+                                    Add Comment
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="w-1/3 p-6">
+                    <h2 className="text-2xl mt-2 font-semibold mb-4">Suggested Videos</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-1 gap-6">
+                        {filteredVideos.length > 0 ? (
+                            filteredVideos.map(video => (
+                                <VideoCard key={video.id} video={video} />
+                            ))
+                        ) : (
+                            <div className="col-span-full text-center text-gray-500"><LoaderSmall /></div>
+                        )}
                     </div>
                 </div>
             </div>

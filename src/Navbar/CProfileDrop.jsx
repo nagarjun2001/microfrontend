@@ -106,6 +106,7 @@ import { useState, useRef, useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import Timer from "../User/Timer";
+import { toast } from "react-toastify";
 
 const CProfileDrop = ({ onLogout }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -140,6 +141,7 @@ const CProfileDrop = ({ onLogout }) => {
     const handleLogout = () => {
         sessionStorage.clear();
         navi("/login");
+        toast.success("Logged out successfully!");
     }
 
     const handleSetTimer = () => {

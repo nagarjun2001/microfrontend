@@ -1,7 +1,11 @@
 import React from 'react'
 import logo from '../images/ytlogo.png'
+import { toast } from 'react-toastify'
 
 function HomeNavbar() {
+    let handleClick = () => {
+        toast.warn("Login to see contents");
+    }
   return (
     <div>
       <header
@@ -20,12 +24,11 @@ function HomeNavbar() {
     for="search-bar">
     <input id="search-bar" placeholder="Search Rhymes..."
         class="px-3 rounded-md flex-1 outline-none bg-white" />
-    <button
+    <button onClick={handleClick}
         class="w-full md:w-auto px-6 py-1.5 bg-black border-black text-white fill-white active:scale-95 duration-100 border will-change-transform overflow-hidden relative rounded-xl transition-all disabled:opacity-70">
         
         <div class="relative">
 
-            {/* <!-- Loading animation change opacity to display --> */}
             <div
                 class="flex items-center justify-center h-3 w-3 absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 transition-all">
                 <svg class="opacity-0 animate-spin w-full h-full" xmlns="http://www.w3.org/2000/svg" fill="none"

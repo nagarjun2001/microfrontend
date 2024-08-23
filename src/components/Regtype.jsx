@@ -138,13 +138,13 @@ function Regtype() {
               alt="User Registration"
               className="w-full h-64 object-cover" />
             <div className="p-6 text-center">
-              <h2 className="text-3xl font-semibold text-gray-800 mb-4">User Registration</h2>
-              <p className="text-gray-600 mb-6">Access diverse and engaging content tailored just for you. Join our vibrant community today!</p>
+              <h2 className="text-3xl font-semibold text-gray-800 mb-4">Parents</h2>
+              <p className="text-gray-600 mb-6">Access diverse and engaging content tailored just for you and also get access to Parental Controls!</p>
               <Link
                 to="/UserReg"
                 className="inline-block bg-gradient-to-r from-orange-100 to-orange-50 to-orange-100 text-black py-3 px-6 rounded-full font-bold shadow-lg transform transition-transform duration-300 hover:scale-105"
               >
-                Register as User
+                Register as Parent
               </Link>
             </div>
           </div>

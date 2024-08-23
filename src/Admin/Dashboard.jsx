@@ -112,11 +112,12 @@
 
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ANav from '../Navbar/ANav';
 import Stats from './Stats';
+import Error from '../components/Error';
 
 const Dashboard = () => {
     const adminId = sessionStorage.getItem("adminId");
@@ -124,6 +125,7 @@ const Dashboard = () => {
     const [isError, setIsError] = useState(false);
     const [videos, setVideos] = useState([]);
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         if (sessionStorage.getItem("loggedOut") === "true") {

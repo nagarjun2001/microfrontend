@@ -71,10 +71,9 @@ const UserProfile = () => {
   if (error) return <p className="text-red-600 text-center text-lg">{error}</p>;
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen">
       <CNav />
       <div className="container mx-auto px-4 py-6 max-w-3xl">
-        {/* Profile Header */} 
         <button
           onClick={handleGoBack}
           className="bg-gray-500 text-white px-6 py-3 rounded-md shadow-md hover:bg-gray-600 transition-colors duration-300"
@@ -112,7 +111,6 @@ const UserProfile = () => {
           </section>
         )}
 
-        {/* Edit Profile Form */}
         <section className="bg-white p-8 rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold mb-6 text-gray-900">Edit Profile</h2>
           {success && <p className="text-green-600 mb-4 text-lg">{success}</p>}

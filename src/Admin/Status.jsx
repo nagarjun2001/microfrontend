@@ -268,7 +268,8 @@ const Status = () => {
             .then((res) => {
                 res.data.status = true;
                 toast.success("Video Approved Successfully");
-                return axios.put(`http://localhost:1234/video/${id}`, res.data);
+                return axios.put(`http://localhost:1234/video/${id}`, res.data)
+                .then(window.location.reload());
             })
             .catch((err) => {
                 toast.error("Error in Approving video");
@@ -282,7 +283,8 @@ const Status = () => {
             .then((res) => {
                 res.data.status = false;
                 toast.success("Video Rejected Successfully");
-                return axios.put(`http://localhost:1234/video/${id}`, res.data);
+                return axios.put(`http://localhost:1234/video/${id}`, res.data)
+                .then(window.location.reload());;
             })
             .catch((err) => console.log(err));
     };

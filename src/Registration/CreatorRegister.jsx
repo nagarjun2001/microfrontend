@@ -155,8 +155,8 @@ export default function CreatorRegister() {
 
             try {
                 await axios.post("http://localhost:1234/creator", formData);
+                navigate("/Login");
                 toast.success("Registered Successfully!");
-                navigate("/");
             } catch (error) {
                 console.error("Registration failed:", error);
                 toast.error("Registration failed. Please try again.");

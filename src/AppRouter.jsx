@@ -20,6 +20,8 @@ import UVideoDetail from './User/UVideoDetail'
 import CreatorProfile from './Creator/CreatorProfile'
 import UserProfile from './User/UserProfile'
 import Stats from './Admin/Stats'
+import AProfile from './Admin/AProfile'
+import ParentalControls from './User/ParentalControls'
 
 function AppRouter() {
   return (
@@ -33,6 +35,7 @@ function AppRouter() {
             <Route path='/dashboard' element={<Dashboard />}></Route>
             <Route path='/status' element={<Status />}></Route>
             <Route path='/stats' element={<Stats />}></Route>
+            <Route path="/adminprofile/:adminId" element={<AProfile />} />
 
             <Route path='/UserReg' element={<UserRegister />}></Route>
             <Route path='/UserLogin' element={<UserLogin />}></Route>
@@ -41,6 +44,7 @@ function AppRouter() {
             <Route path='/userblockcat' element={<BlockedCat />}></Route>
             <Route path="/video/:videoId" element={<UVideoDetail />} />
             <Route path="/userprofile/:userId" element={<UserProfile />} />
+            <Route path='/parentalControls' element={<ParentalControls />} />
 
             <Route path='/creatorlogin' element={<CreatorLogin />}></Route>
             <Route path='/creatorreg' element={<CreatorRegister/>}></Route>

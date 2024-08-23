@@ -208,11 +208,10 @@ const VideoDetails = () => {
                 <div className="bg-gray-100 p-7 rounded-3xl shadow-xl">
                 <button
           onClick={handleGoBack}
-          className="relative bg-gray-500 text-white px-6 py-3 rounded-md shadow-md hover:bg-gray-600 transition-colors duration-300"
+          className="relative text-black px-3 py-2 rounded-md font-bold shadow-md hover:bg-red-500 transition-colors duration-300"
         >
           Go Back
         </button>
-
                   <h1 className='relative text-3xl text-center font-bold mb-2'>Video Details</h1>
                   
                     {/* Video Player */}
@@ -238,15 +237,15 @@ const VideoDetails = () => {
                     <p className="text-gray-600 mb-4"><span className="font-semibold">Category:</span> {video.category.category_name || "Uncategorized"}</p>
 
                     <div className="mt-8 flex gap-6">
-                        <button
+                        {/* <button
                             onClick={handleEdit}
-                            className="bg-yellow-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-yellow-600 transition-transform transform hover:scale-105"
+                            className="bg-yellow-500 text-white px-6 py-2 rounded-lg shadow-lg hover:bg-yellow-600 transition-transform transform hover:scale-105"
                             >
                             Edit
-                            </button>
+                            </button> */}
                             <button
                             onClick={handleDelete}
-                            className="bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-red-600 transition-transform transform hover:scale-105"
+                            className="bg-red-500 text-white px-6 py-2 rounded-lg shadow-lg hover:bg-red-600 transition-transform transform hover:scale-105"
                             >
                             Delete
                             </button>

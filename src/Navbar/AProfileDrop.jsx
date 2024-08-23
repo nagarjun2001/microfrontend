@@ -1,11 +1,17 @@
 import { useState, useRef, useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import Timer from "../User/Timer";
+import Error from "../components/Error";
+import { toast } from "react-toastify";
 
-const ProfileDrop = ({ onLogout }) => {
+const AProfileDrop = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isTimerVisible, setIsTimerVisible] = useState(false);
+    const [remainingTime, setRemainingTime] = useState(null);
     const profileRef = useRef();
-    const navigate = useNavigate();
+    const location = useLocation();
+    const adminId = sessionStorage.getItem("adminId"); 
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -17,12 +23,31 @@ const ProfileDrop = ({ onLogout }) => {
         return () => document.removeEventListener('click', handleClickOutside);
     }, []);
 
-    const handleGoToParentalControls = () => {
-        navigate("/parentalcontrols");
-        setIsOpen(false);
-    };
+    useEffect(() => {
+        if (remainingTime !== null && remainingTime > 0) {
+            const interval = setInterval(() => {
+                setRemainingTime((prevTime) => prevTime - 1);
+            }, 1000);
+            return () => clearInterval(interval);
+        }
+    }, [remainingTime]);
 
-    const userId = sessionStorage.getItem('userid');
+    const navi = useNavigate();
+
+    const handleLogout = () => {
+        sessionStorage.clear();
+        navi("/adminlogin");
+        toast.success("Logged out successfully!")
+    }
+
+    if (!adminId) {
+        return <><Error /></>
+      }
+    
+      if(location.pathname === "/CreatorHomepage" && sessionStorage.getItem("adminid")!= adminId){
+        navi("/adminlogin");
+        sessionStorage.clear();
+      }
 
     return (
         <div className="relative" ref={profileRef}>
@@ -37,24 +62,17 @@ const ProfileDrop = ({ onLogout }) => {
             {isOpen && (
                 <ul className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg z-10">
                     <li>
-                        <button
-                            onClick={handleGoToParentalControls}
-                            className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-                        >
-                            Parental Controls
-                        </button>
-                    </li>
-                    <li>
                         <Link
-                            to={`/userprofile/${userId}`}
+                            to={`/adminprofile/${adminId}`} // Correct URL path without colon
                             className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                         >
-                            Profile
+                            Edit Profile
                         </Link>
                     </li>
+                    
                     <li>
                         <button
-                            onClick={onLogout}
+                            onClick={handleLogout}
                             className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
                         >
                             Logout
@@ -66,4 +84,4 @@ const ProfileDrop = ({ onLogout }) => {
     );
 };
 
-export default ProfileDrop;
+export default AProfileDrop;

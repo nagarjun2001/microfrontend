@@ -20,7 +20,7 @@ export default () => {
         }
     ]
     return (
-        <footer className="pt-10">
+        <footer>
             <div className="max-w-screen-xl mx-auto px-4 text-gray-600 md:px-8">
                 <div className="justify-between sm:flex">
                     <div className="space-y-6">

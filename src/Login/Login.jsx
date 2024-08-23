@@ -46,7 +46,7 @@ const Login = () => {
             })
             .catch((err) => {
                 console.error(err);
-                toast.error("Login Failed");
+                toast.error("Login Failed! Check User type and credentials!");
             });
     };
 
@@ -72,7 +72,7 @@ const Login = () => {
                             onChange={(e) => setRole(e.target.value)}
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         >
-                            <option value="user">User</option>
+                            <option value="user">Parent</option>
                             <option value="creator">Content Creator</option>
                         </select>
                     </div>
@@ -100,11 +100,12 @@ const Login = () => {
                     </div>
                     <button
                         type="submit"
+                        role='button'
                         className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     >
                         Login
                     </button>
-                    Are you an Admin? <Link to="/adminlogin"><span className='underline underline-offset-1'>Login</span></Link> here
+                    Are you an Admin? <Link to="/adminlogin"><span className='text-red-600'>Login</span></Link> here
                 </form>
             </div>
             <ToastContainer />
