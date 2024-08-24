@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminNav from '../Navbar/AdminNav';
 
@@ -36,53 +36,50 @@ export default function UserLogin() {
             .then((res) => {
                 if (username === res.data.username && password === res.data.password) {
                     sessionStorage.setItem("adminId", res.data.id);
-                    navigate("/dashboard");
                     toast.success("Login Success!!!");
+                    navigate("/dashboard");
                 }
             })
             .catch((error) => {
-                console.error("Login failed:", error);
                 toast.error("Login failed. Please try again.");
             });
     };
 
     return (
         <>
-        <div className="bg-gray-100">
-            <AdminNav />
-        </div>
-            <div className="flex bg-gray-100 h-screen">
-                <div
-                    className="w-1/2 mt-20 mb-10 bg-cover bg-center flex items-center justify-center"
-                    style={{
-                        // backgroundImage: `url("https://images.ctfassets.net/9uhkiji6mhey/3bazmOiHscc6oTqkyaxW6Y/5c2bde43a673b354ca001b05e3692657/GoogleKidsSpace-Case-09.1.jpg?q=100")`
-                        backgroundImage: `url("https://gatlabs.com/wp-content/uploads/2023/06/Google-Workspace-Super-Admin-vs-other-Admin-Roles_-All-you-Need-to-Know-updated-2023-2048x1024.png")`
-                    }}
-                >
+        <AdminNav />
+            <div className="relative min-h-screen flex items-center">
+                {/* Image on the left */}
+                <div className="hidden lg:flex flex-shrink-0 w-1/2 h-full">
+                    <img
+                        src="https://cdn.dribbble.com/users/1946759/screenshots/4596801/admin.png"
+                        alt="Background"
+                        className="object-cover w-full h-full"
+                    />
                 </div>
 
-                <div className="w-1/2 flex items-center justify-center bg-gray-100 p-6">
+                <div className="w-full lg:w-1/2 p-6 flex items-center justify-center">
                     <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
-                        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Login Admin</h2>
+                        <h2 className="text-xl font-bold text-gray-800 mb-6 text-center">Admin Login</h2>
                         <form onSubmit={handleSubmit}>
-                            <div className="flex flex-col mb-6">
-                                <label className="block text-gray-700 text-sm font-medium mb-2">Username</label>
+                            <div className="mb-6">
+                                <label className="block text-gray-600 text-sm font-medium mb-2">Username</label>
                                 <input
                                     name="username"
                                     type="text"
-                                    className="bg-gray-50 w-full text-gray-700 text-sm px-4 py-3 rounded-md border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 transition duration-150 ease-in-out"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     placeholder="Enter Username"
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
                                 />
                             </div>
 
-                            <div className="flex flex-col mb-6">
-                                <label className="block text-gray-700 text-sm font-medium mb-2">Password</label>
+                            <div className="mb-6">
+                                <label className="block text-gray-600 text-sm font-medium mb-2">Password</label>
                                 <input
                                     name="password"
                                     type="password"
-                                    className="bg-gray-50 w-full text-gray-700 text-sm px-4 py-3 rounded-md border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 transition duration-150 ease-in-out"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     placeholder="Enter Password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -92,7 +89,7 @@ export default function UserLogin() {
                             <div className="mt-6 text-center">
                                 <button
                                     type="submit"
-                                    className="py-3 px-6 text-sm font-semibold rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full py-3 px-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 >
                                     Login
                                 </button>
@@ -100,7 +97,6 @@ export default function UserLogin() {
                         </form>
                     </div>
                 </div>
-                <ToastContainer />
             </div>
         </>
     );

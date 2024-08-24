@@ -1,13 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Timer from "../User/Timer";
 import Error from "../components/Error";
 import { toast } from "react-toastify";
 
 const AProfileDrop = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [isTimerVisible, setIsTimerVisible] = useState(false);
     const [remainingTime, setRemainingTime] = useState(null);
     const profileRef = useRef();
     const location = useLocation();
@@ -35,8 +33,8 @@ const AProfileDrop = () => {
     const navi = useNavigate();
 
     const handleLogout = () => {
-        sessionStorage.clear();
         navi("/adminlogin");
+        sessionStorage.clear();
         toast.success("Logged out successfully!")
     }
 
@@ -63,7 +61,7 @@ const AProfileDrop = () => {
                 <ul className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg z-10">
                     <li>
                         <Link
-                            to={`/adminprofile/${adminId}`} // Correct URL path without colon
+                            to={`/adminprofile/${adminId}`}
                             className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                         >
                             Edit Profile

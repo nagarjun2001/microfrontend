@@ -49,6 +49,39 @@ const UserProfile = () => {
     }));
   };
 
+  const [timer, setTimer] = useState(1);
+
+    useEffect(() => {
+        const checkSession = () => {
+            const storedTime = sessionStorage.getItem("remainingTime");
+            if (storedTime) {
+                const expiryTime = parseInt(storedTime, 10);
+                const now = Date.now();
+                if (now >= expiryTime) {
+                    handleLogout();
+                } else {
+                    const interval = setInterval(() => {
+                        const timeLeft = expiryTime - Date.now();
+                        if (timeLeft <= 0) {
+                            clearInterval(interval);
+                            handleLogout();
+                        } else {
+                            setTimer(Math.ceil(timeLeft / 60000));
+                        }
+                    }, 1000);
+                    return () => clearInterval(interval);
+                }
+            }
+        };
+        checkSession();
+    }, []);
+
+    const handleLogout = () => {
+      sessionStorage.removeItem("userid");
+      sessionStorage.removeItem("remainingTime");
+      navigate("/login");
+    }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.put(`http://localhost:1234/user`, formData)
@@ -76,7 +109,7 @@ const UserProfile = () => {
       <div className="container mx-auto px-4 py-6 max-w-3xl">
         <button
           onClick={handleGoBack}
-          className="bg-gray-500 text-white px-6 py-3 rounded-md shadow-md hover:bg-gray-600 transition-colors duration-300"
+          className="bg-red-500 text-white px-6 py-3 rounded-md shadow-md hover:bg-red-600 transition-colors duration-300"
         >
           Go Back
         </button>
@@ -201,7 +234,7 @@ const UserProfile = () => {
             </div>
             <button
               type="submit"
-              className="bg-blue-500 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-600 transition-colors duration-300"
+              className="bg-red-500 text-white px-6 py-3 rounded-md shadow-md hover:bg-red-600 transition-colors duration-300"
             >
               Save Changes
             </button>

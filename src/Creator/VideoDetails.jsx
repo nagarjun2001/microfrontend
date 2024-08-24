@@ -127,8 +127,8 @@ const VideoDetails = () => {
   const handleDelete = () => {
     axios.delete(`http://localhost:1234/video/${videoId}`)
       .then(() => {
-        navigate('/CreatorHomepage');
-        toast.success("Deleted Successfully!");
+          toast.success("Deleted Successfully!");
+          navigate('/CreatorHomepage');
       })
       .catch(err => toast.error('Error deleting video:', err));
   };

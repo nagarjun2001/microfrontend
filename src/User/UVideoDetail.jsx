@@ -22,6 +22,39 @@ const UVideoDetail = () => {
     const [userdata, setUserdata] = useState({});
     const [videoload, setVideoload] = useState(true);
     const [categories, setCategories] = useState([]);
+    const [timer, setTimer] = useState(1);
+
+    useEffect(() => {
+        const checkSession = () => {
+            const storedTime = sessionStorage.getItem("remainingTime");
+            if (storedTime) {
+                const expiryTime = parseInt(storedTime, 10);
+                const now = Date.now();
+                if (now >= expiryTime) {
+                    handleLogout();
+                } else {
+                    const interval = setInterval(() => {
+                        const timeLeft = expiryTime - Date.now();
+                        if (timeLeft <= 0) {
+                            clearInterval(interval);
+                            handleLogout();
+                        } else {
+                            setTimer(Math.ceil(timeLeft / 60000));
+                        }
+                    }, 1000);
+                    return () => clearInterval(interval);
+                }
+            }
+        };
+        checkSession();
+    }, []);
+
+    const handleLogout = () => {
+        sessionStorage.removeItem("userid");
+        sessionStorage.removeItem("remainingTime");
+        navigate("/login");
+    }
+
 
     useEffect(() => {
         axios.get(`http://localhost:1234/video/${videoId}`)
@@ -108,7 +141,7 @@ const UVideoDetail = () => {
                     <div className=" p-4 rounded-xl">
                         <button
                             onClick={handleGoBack}
-                            className="relative mb-3 bg-black/80 text-white px-5 py-2 rounded-md shadow-md hover:bg-gray-600 transition-colors duration-300"
+                            className="relative mb-3 bg-red-500 text-white px-5 py-2 rounded-md shadow-md hover:bg-red-600 transition-colors duration-300"
                         >
                             Go Back
                         </button>
@@ -135,14 +168,14 @@ const UVideoDetail = () => {
                         <div className="flex items-center space-x-4 mb-6">
                             <button
                                 onClick={handleLike}
-                                className={`flex items-center space-x-2 px-2 py-2 rounded-md ${isLiked ? 'shadow-sm shadow-black/80 text-white' : ' text-black/80 '} hover:bg-gray-100 text-black/80 transition-colors duration-300`}
+                                className={`flex items-center space-x-2 px-2 py-2 rounded-md ${isLiked ? 'shadow-sm shadow-black/80 outline outline-red-500 text-black' : ' text-black/80 '} hover:bg-gray-100 text-black/80 transition-colors duration-300`}
                             >
                                 <FaThumbsUp />
                                 <span>Like</span>
                             </button>
                             <button
                                 onClick={handleDislike}
-                                className={`flex items-center space-x-2 px-2 py-2 rounded-md ${isDisliked ? 'shadow-sm shadow-black/80 text-white' : ' text-black/80 '} hover:bg-gray-100 text-black/80 transition-colors duration-300`}
+                                className={`flex items-center space-x-2 px-2 py-2 rounded-md ${isDisliked ? 'shadow-sm shadow-black/80 outline outline-red-500 text-black' : ' text-black/80 '} hover:bg-gray-100 text-black/80 transition-colors duration-300`}
                             >
                                 <FaThumbsDown />
                                 <span>Dislike</span>

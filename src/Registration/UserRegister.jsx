@@ -16,9 +16,11 @@ export default function UserRegister() {
         password: "",
         confirmpassword: "",
         mobno: "",
-        childAge: "", // Now an empty string by default
+        childAge: "",
         acceptTerms: false
     });
+
+    const [errors, setErrors] = useState({}); // State to hold error messages
 
     const handleChange = (e) => {
         const { name, type, value, checked } = e.target;
@@ -28,25 +30,48 @@ export default function UserRegister() {
         });
     };
 
+    const validate = () => {
+        const newErrors = {};
+
+        // Username validation
+        if (!formData.uname) newErrors.uname = "Username is required.";
+        else if (formData.uname.length < 3) newErrors.uname = "Username must be at least 3 characters long.";
+
+        // First Name validation
+        if (!formData.fname) newErrors.fname = "First name is required.";
+        else if (!/^[A-Za-z]+$/.test(formData.fname)) newErrors.fname = "First name can only contain letters.";
+
+        // Last Name validation
+        if (!formData.lname) newErrors.lname = "Last name is required.";
+        else if (!/^[A-Za-z]+$/.test(formData.lname)) newErrors.lname = "Last name can only contain letters.";
+
+        // Email validation
+        if (!formData.email) newErrors.email = "Email is required.";
+        else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Email address is invalid.";
+
+        // Password validation
+        if (!formData.password) newErrors.password = "Password is required.";
+        else if (formData.password.length < 8) newErrors.password = "Password must be at least 8 characters long.";
+        else if (!/[A-Z]/.test(formData.password)) newErrors.password = "Password must contain at least one uppercase letter.";
+        else if (!/[a-z]/.test(formData.password)) newErrors.password = "Password must contain at least one lowercase letter.";
+        else if (!/[0-9]/.test(formData.password)) newErrors.password = "Password must contain at least one number.";
+        else if (!/[\W_]/.test(formData.password)) newErrors.password = "Password must contain at least one special character.";
+
+        if (formData.password !== formData.confirmpassword) newErrors.confirmpassword = "Passwords do not match.";
+
+        if (!formData.mobno) newErrors.mobno = "Mobile number is required.";
+        else if (!/^\d{10}$/.test(formData.mobno)) newErrors.mobno = "Mobile number must be exactly 10 digits.";
+
+        if (!formData.acceptTerms) newErrors.acceptTerms = "You must accept the terms and conditions.";
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (
-            formData.uname &&
-            formData.fname &&
-            formData.lname &&
-            formData.email &&
-            formData.password &&
-            formData.confirmpassword &&
-            formData.mobno &&
-            formData.mobno.length === 10 &&
-            formData.acceptTerms
-        ) {
-            if (formData.password !== formData.confirmpassword) {
-                toast.warn("Passwords do not match.");
-                return;
-            }
-
+        if (validate()) {
             try {
                 await axios.post("http://localhost:1234/user", formData);
                 toast.success("Registered Successfully!");
@@ -56,23 +81,23 @@ export default function UserRegister() {
                 toast.error("Registration failed. Please try again.");
             }
         } else {
-            toast.warn("Please fill out all fields correctly and accept the terms.");
+            toast.warn("Please fix the errors in the form.");
         }
     };
 
     return (
         <>
             <UserRegNavbar />
-            <div className="flex">
+            <div className="flex flex-col md:flex-row">
                 <div
-                    className="w-1/2 bg-cover bg-center flex items-center justify-center"
+                    className="w-full md:w-1/2 bg-cover bg-center flex items-center justify-center"
                     style={{
                         backgroundImage: `url("https://images.ctfassets.net/9uhkiji6mhey/1hL9r3U8qx3BtN6FIjMqAd/290716c9274e4e626d31c59ecba74267/YTkidsv2-content-10.jpg")`
                     }}
                 >
                 </div>
 
-                <div className="w-1/2 flex items-center justify-center bg-gray-100 p-6">
+                <div className="w-full md:w-1/2 flex items-center justify-center bg-gray-100 p-6">
                     <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
                         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Create Your Account</h2>
                         <form onSubmit={handleSubmit}>
@@ -91,10 +116,12 @@ export default function UserRegister() {
                                         <input
                                             name={field.name}
                                             type={field.type}
-                                            className="bg-gray-50 w-full text-gray-700 text-sm px-4 py-3 rounded-md border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 transition duration-150 ease-in-out"
+                                            className={`bg-gray-50 w-full text-gray-700 text-sm px-4 py-3 rounded-md border ${errors[field.name] ? 'border-red-500' : 'border-gray-300'} transition duration-150 ease-in-out`}
                                             placeholder={field.placeholder}
                                             value={formData[field.name]}
-                                            onChange={handleChange} />
+                                            onChange={handleChange}
+                                        />
+                                        {errors[field.name] && <p className="text-red-500 text-sm mt-1">{errors[field.name]}</p>}
                                     </div>
                                 ))}
 
@@ -103,7 +130,7 @@ export default function UserRegister() {
                                     <select
                                         name="childAge"
                                         id="childAge"
-                                        className="bg-gray-50 w-full text-gray-700 text-sm px-4 py-3 rounded-md border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 transition duration-150 ease-in-out"
+                                        className="bg-gray-50 w-full text-gray-700 text-sm px-4 py-3 rounded-md border border-gray-300 transition duration-150 ease-in-out"
                                         value={formData.childAge}
                                         onChange={handleChange}
                                     >
@@ -127,6 +154,7 @@ export default function UserRegister() {
                                 <label htmlFor="acceptTerms" className="ml-2 text-gray-700 text-sm">
                                     I agree to the <a href="/terms" className="text-blue-600 underline">Terms and Conditions</a>
                                 </label>
+                                {errors.acceptTerms && <p className="text-red-500 text-sm ml-6">{errors.acceptTerms}</p>}
                             </div>
 
                             <div className="mt-6 text-center">
@@ -140,9 +168,9 @@ export default function UserRegister() {
                         </form>
                     </div>
                 </div>
-
-                <ToastContainer />
             </div>
+
+            <ToastContainer />
         </>
     );
 }

@@ -57,6 +57,8 @@
 //     }, [location, sessionDuration]);
 
 //     useEffect(() => {
+//         setVideoload(true);
+        
 //         axios
 //             .get("http://localhost:1234/video/approved")
 //             .then((res) => {
@@ -64,7 +66,7 @@
 //                 setVideoload(false);
 
 //                 const uniqueAgeLevels = [...new Set(res.data.map(video => video.agelevel))].filter(level => level);
-//                 setAgeLevels(['All', ...uniqueAgeLevels]); // Add 'All' as a default option
+//                 setAgeLevels(['All', ...uniqueAgeLevels]);
 //             })
 //             .catch((error) => {
 //                 console.error("There was an error fetching the video data:", error);
@@ -83,6 +85,33 @@
 //             });
 //     }, []);
 
+//     const [timer, setTimer] = useState(1);
+
+//     useEffect(() => {
+//         const checkSession = () => {
+//             const storedTime = sessionStorage.getItem("remainingTime");
+//             if (storedTime) {
+//                 const expiryTime = parseInt(storedTime, 10);
+//                 const now = Date.now();
+//                 if (now >= expiryTime) {
+//                     handleLogout();
+//                 } else {
+//                     const interval = setInterval(() => {
+//                         const timeLeft = expiryTime - Date.now();
+//                         if (timeLeft <= 0) {
+//                             clearInterval(interval);
+//                             handleLogout();
+//                         } else {
+//                             setTimer(Math.ceil(timeLeft / 60000));
+//                         }
+//                     }, 1000);
+//                     return () => clearInterval(interval);
+//                 }
+//             }
+//         };
+//         checkSession();
+//     }, []);
+    
 //     const handleLogout = () => {
 //         sessionStorage.removeItem("userid");
 //         sessionStorage.removeItem("sessionDuration");
@@ -127,50 +156,55 @@
 //                 onSearchChange={handleSearchChange}
 //                 searchQuery={searchQuery}
 //             />
-//             <div className="absolute min-h-screen">
+
+//             {/* Carousel */}
+
+//             {/*Carousel end */}
+//             <div className="relative min-h-screen">
 //                 <div className="container mx-auto p-6">
-//                     <h2 className='absolute mt-10 text-lg font-semibold text-gray-900 truncate mb-5'>Featured Videos</h2>
+//                     <div className="flex gap-4 mb-6">
+//                         <div className="flex-1">
+//                             <label htmlFor="category" className="block text-lg font-semibold text-gray-800 mb-2">Filter by Category:</label>
+//                             <select
+//                                 id="category"
+//                                 value={selectedCategory}
+//                                 onChange={handleCategoryChange}
+//                                 className="w-64 p-2 border-dark-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-dark-500 transition-all duration-300"
+//                             >
+//                                 <option value="All">All</option>
+//                                 {categories.length > 0 ? (
+//                                     categories.map((cat) => (
+//                                         <option key={cat.id} value={cat.category_name}>
+//                                             {cat.category_name}
+//                                         </option>
+//                                     ))
+//                                 ) : (
+//                                     <option value="All">No Categories Available</option>
+//                                 )}
+//                             </select>
+//                         </div>
 
-//                     <div className="mb-6 text-end">
-//                         <label htmlFor="category" className="block text-lg font-semibold text-gray-800 mb-2">Filter by Category:</label>
-//                         <select
-//                             id="category"
-//                             value={selectedCategory}
-//                             onChange={handleCategoryChange}
-//                             className="p-2 border-dark-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-dark-500 transition-all duration-300"
-//                         >
-//                             <option value="All">All</option>
-//                             {categories.length > 0 ? (
-//                                 categories.map((cat) => (
-//                                     <option key={cat.id} value={cat.category_name}>
-//                                         {cat.category_name}
-//                                     </option>
-//                                 ))
-//                             ) : (
-//                                 <option value="All">No Categories Available</option>
-//                             )}
-//                         </select>
+//                         <div className="flex-1 text-end">
+//                             <label htmlFor="age" className="flex justify-end block text-lg font-semibold text-gray-800 mb-2">Filter by Age Level:</label>
+//                             <select
+//                                 id="age"
+//                                 value={ageFilter}
+//                                 onChange={(e) => setAgeFilter(e.target.value)}
+//                                 className="w-64  p-2 border-dark-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-dark-500 transition-all duration-300"
+//                             >
+//                                 {ageLevels.length > 0 ? (
+//                                     ageLevels.map((ageLevel) => (
+//                                         <option key={ageLevel} value={ageLevel}>
+//                                             {ageLevel}
+//                                         </option>
+//                                     ))
+//                                 ) : (
+//                                     <option value="All">No Age Levels Available</option>
+//                                 )}
+//                             </select>
+//                         </div>
 //                     </div>
-
-//                     <div className="mb-6 text-end">
-//                         <label htmlFor="age" className="block text-lg font-semibold text-gray-800 mb-2">Filter by Age Level:</label>
-//                         <select
-//                             id="age"
-//                             value={ageFilter}
-//                             onChange={(e) => setAgeFilter(e.target.value)}
-//                             className="p-2 border-dark-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-dark-500 transition-all duration-300"
-//                         >
-//                             {ageLevels.length > 0 ? (
-//                                 ageLevels.map((ageLevel) => (
-//                                     <option key={ageLevel} value={ageLevel}>
-//                                         {ageLevel}
-//                                     </option>
-//                                 ))
-//                             ) : (
-//                                 <option value="All">No Age Levels Available</option>
-//                             )}
-//                         </select>
-//                     </div>
+//                     <h2 className='text-xl font-semibold text-gray-900 truncate mb-1'>Featured Videos</h2>
 
 //                     {videoload ? (
 //                         <div className="flex justify-center items-center min-h-screen">
@@ -183,7 +217,7 @@
 //                                     <VideoCard key={video.id} video={video} />
 //                                 ))
 //                             ) : (
-//                                 <div className="col-span-full flex justify-center align-center text-center text-gray-500">No Videos Available</div>
+//                                 <div className="col-span-full flex justify-center items-center text-center text-gray-500">No Videos Available</div>
 //                             )}
 //                         </div>
 //                     )}
@@ -197,14 +231,15 @@
 
 // export default UserHomepage;
 
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import VideoCard from './VideoCard';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import UNav from '../Navbar/UNav';
 import Footer from '../components/Footer';
+import Slider from 'react-slick'; // Import Slider component
 
 function UserHomepage() {
     const [videodata, setVideodata] = useState([]);
@@ -256,6 +291,8 @@ function UserHomepage() {
     }, [location, sessionDuration]);
 
     useEffect(() => {
+        setVideoload(true);
+        
         axios
             .get("http://localhost:1234/video/approved")
             .then((res) => {
@@ -263,7 +300,7 @@ function UserHomepage() {
                 setVideoload(false);
 
                 const uniqueAgeLevels = [...new Set(res.data.map(video => video.agelevel))].filter(level => level);
-                setAgeLevels(['All', ...uniqueAgeLevels]); // Add 'All' as a default option
+                setAgeLevels(['All', ...uniqueAgeLevels]);
             })
             .catch((error) => {
                 console.error("There was an error fetching the video data:", error);
@@ -284,21 +321,13 @@ function UserHomepage() {
 
     const handleLogout = () => {
         sessionStorage.removeItem("userid");
-        sessionStorage.removeItem("sessionDuration");
-        sessionStorage.setItem("loggedOut", "true");
+        sessionStorage.removeItem("remainingTime");
         navigate("/login");
+        toast.success("Logged Out successfully!")
     };
 
     const handleCategoryChange = (e) => {
         setSelectedCategory(e.target.value);
-    };
-
-    const handleOpenModal = () => setShowModal(true);
-    const handleCloseModal = () => setShowModal(false);
-
-    const handleDuration = (minutes) => {
-        setSessionDuration(minutes);
-        sessionStorage.setItem('sessionDuration', minutes);
     };
 
     const handleSearchChange = (e) => {
@@ -318,15 +347,49 @@ function UserHomepage() {
         return toast.error("Error Logging in");
     }
 
+    const carouselSettings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        arrows: true,
+    };
+
     return (
         <>
             <UNav 
-                onSetTimer={handleOpenModal}
+                onSetTimer={() => setShowModal(true)}
                 onLogout={handleLogout}
                 onSearchChange={handleSearchChange}
                 searchQuery={searchQuery}
             />
-            <div className="absolute min-h-screen">
+
+            {/* Carousel */}
+            <div className="max-w-2xl mx-auto">
+                <Slider {...carouselSettings}>
+                    <div>
+                        <video className='object-cover w-full h-full'> <source src="videos.ctfassets.net/9uhkiji6mhey/6Iy2cR8JijV57Q2fmTPWPS/9c58a6c8df06672a4bd5997921c84691/ytkidsv1-content-03-2.mp4" type='mp4/video' /></video>
+                        <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl font-semibold text-white md:text-2xl">First Slide</span>
+                    </div>
+                    <div>
+                        <img src="https://path-to-your-image.jpg" className="object-cover w-full h-full" alt="Slide 2" />
+                    </div>
+                    <div>
+                        <img src="https://path-to-your-image.jpg" className="object-cover w-full h-full" alt="Slide 3" />
+                    </div>
+                </Slider>
+                <p className="mt-5 text-center text-gray-700">
+                    This carousel slider component is part of a larger, open-source library. Learn more
+                    by going to the official documentation.
+                </p>
+            </div>
+
+            {/* Carousel End */}
+
+            <div className="relative min-h-screen">
                 <div className="container mx-auto p-6">
                     <div className="flex gap-4 mb-6">
                         <div className="flex-1">
@@ -335,7 +398,7 @@ function UserHomepage() {
                                 id="category"
                                 value={selectedCategory}
                                 onChange={handleCategoryChange}
-                                className="w-full p-2 border-dark-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-dark-500 transition-all duration-300"
+                                className="w-64 p-2 border-dark-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-dark-500 transition-all duration-300"
                             >
                                 <option value="All">All</option>
                                 {categories.length > 0 ? (
@@ -350,13 +413,13 @@ function UserHomepage() {
                             </select>
                         </div>
 
-                        <div className="flex-1">
-                            <label htmlFor="age" className="block text-lg font-semibold text-gray-800 mb-2">Filter by Age Level:</label>
+                        <div className="flex-1 text-end">
+                            <label htmlFor="age" className="flex justify-end block text-lg font-semibold text-gray-800 mb-2">Filter by Age Level:</label>
                             <select
                                 id="age"
                                 value={ageFilter}
                                 onChange={(e) => setAgeFilter(e.target.value)}
-                                className="w-full p-2 border-dark-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-dark-500 transition-all duration-300"
+                                className="w-64 p-2 border-dark-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-dark-500 transition-all duration-300"
                             >
                                 {ageLevels.length > 0 ? (
                                     ageLevels.map((ageLevel) => (
@@ -383,7 +446,7 @@ function UserHomepage() {
                                     <VideoCard key={video.id} video={video} />
                                 ))
                             ) : (
-                                <div className="col-span-full flex justify-center align-center text-center text-gray-500">No Videos Available</div>
+                                <div className="col-span-full flex justify-center items-center text-center text-gray-500">No Videos Available</div>
                             )}
                         </div>
                     )}

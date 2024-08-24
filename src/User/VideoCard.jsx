@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaThumbsUp } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const VideoCard = ({ video }) => {
     const navigate = useNavigate();
@@ -11,6 +12,41 @@ const VideoCard = ({ video }) => {
     const [likes, setLikes] = useState(video.likes || 0);
 
     const handleLike = () => setLikes(likes + 1);
+
+    const [timer, setTimer] = useState(1);
+
+    useEffect(() => {
+        const checkSession = () => {
+            const storedTime = sessionStorage.getItem("remainingTime");
+            if (storedTime) {
+                const expiryTime = parseInt(storedTime, 10);
+                const now = Date.now();
+                if (now >= expiryTime) {
+                    handleLogout();
+                } else {
+                    const interval = setInterval(() => {
+                        const timeLeft = expiryTime - Date.now();
+                        if (timeLeft <= 0) {
+                            clearInterval(interval);
+                            handleLogout();
+                        } else {
+                            setTimer(Math.ceil(timeLeft / 60000));
+                        }
+                    }, 1000);
+                    return () => clearInterval(interval);
+                }
+            }
+        };
+        checkSession();
+    }, []);
+
+    const handleLogout = () => {
+        sessionStorage.removeItem("userid");
+        sessionStorage.removeItem("remainingTime");
+        sessionStorage.setItem("loggedOut", "true");
+        navigate("/login");
+    }
+
 
     return (
         <div

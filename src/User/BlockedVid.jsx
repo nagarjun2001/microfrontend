@@ -1,65 +1,3 @@
-// import axios from 'axios';
-// import React, { useEffect, useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import { toast } from 'react-toastify';
-
-// function BlockedVid() {
-//     const [userdata, setUserdata] = useState({});
-//     const userid = sessionStorage.getItem("userid");
-//     const navi = useNavigate();
-
-//     useEffect(() => {
-//         if (userid) {
-//             axios
-//                 .get(`http://localhost:1234/user/${userid}`)
-//                 .then((res) => {
-//                     setUserdata(res.data);
-//                     console.log(res.data);
-//                 })
-//                 .catch((err) => console.log(err));
-//         }
-//     }, [userid]);
-
-//     const handleRemoveBlockedVideo = (videoId) => {
-//         if (window.confirm('Are you sure you want to unblock this video?')) {
-//             axios
-//                 .delete(`http://localhost:1234/user/${userid}/block/${videoId}`)
-//                 .then((res) => {
-//                     toast.success("Video unblocked successfully!");
-//                     console.log('Video removed successfully:', res.data);
-//                     navi('/UserHomepage');
-//                 })
-//                 .catch((err) => toast.error('Error removing video:', err));
-//         }
-//     };
-
-//     return (
-//         <div>
-//             <h2>Blocked Video ID's:</h2>
-//             {userdata.blockedvideosid && userdata.blockedvideosid.length > 0 ? (
-//                 <ul>
-//                     {userdata.blockedvideosid.map((id, index) => (
-//                         <li key={index} className="flex items-center space-x-2">
-//                             <span>{id}</span>
-//                             <button
-//                                 onClick={() => handleRemoveBlockedVideo(id)}
-//                                 className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition-colors duration-200"
-//                             >
-//                                 Delete
-//                             </button>
-//                         </li>
-//                     ))}
-//                 </ul>
-//             ) : (
-//                 <p>No Videos blocked.</p>
-//             )}
-//         </div>
-//     );
-// }
-
-// export default BlockedVid;
-
-
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -76,31 +14,24 @@ function BlockedVid() {
 
     useEffect(() => {
         if (userid) {
-            // Fetch user data
             axios
                 .get(`http://localhost:1234/user/${userid}`)
                 .then((res) => {
-                    console.log('User Data Response:', res.data); // Debugging
                     setUserdata(res.data);
-                    // Fetch video details based on blocked video IDs
                     const blockedVideosIds = res.data.blockedvideosid || [];
                     if (blockedVideosIds.length > 0) {
                         axios
                             .get(`http://localhost:1234/video/all`)
                             .then((videoRes) => {
-                                console.log('All Videos Response:', videoRes.data); // Debugging
-                                // Filter the videos based on blocked video IDs
                                 const filteredVideos = videoRes.data.filter(video => blockedVideosIds.includes(video.id));
                                 setVideos(filteredVideos);
                             })
                             .catch((err) => {
-                                console.log('Videos API Error:', err); // Debugging
                                 toast.error('Failed to fetch video details.');
                             });
                     }
                 })
                 .catch((err) => {
-                    console.log('User API Error:', err); // Debugging
                     toast.error('Failed to fetch user details.');
                 });
         }
@@ -112,7 +43,6 @@ function BlockedVid() {
                 .then((res) => {
                     toast.success("Video unblocked successfully!");
                     console.log('Video unblocked successfully:', res.data);
-                    // Refresh the page or update state as needed
                     navigate('/UserHomepage');
                 })
                 .catch((err) => toast.error('Error unblocking video:', err));
@@ -128,10 +58,42 @@ function BlockedVid() {
         setSelectedVideo(null);
     };
 
+    const [timer, setTimer] = useState(1);
+
+    useEffect(() => {
+        const checkSession = () => {
+            const storedTime = sessionStorage.getItem("remainingTime");
+            if (storedTime) {
+                const expiryTime = parseInt(storedTime, 10);
+                const now = Date.now();
+                if (now >= expiryTime) {
+                    handleLogout();
+                } else {
+                    const interval = setInterval(() => {
+                        const timeLeft = expiryTime - Date.now();
+                        if (timeLeft <= 0) {
+                            clearInterval(interval);
+                            handleLogout();
+                        } else {
+                            setTimer(Math.ceil(timeLeft / 60000));
+                        }
+                    }, 1000);
+                    return () => clearInterval(interval);
+                }
+            }
+        };
+        checkSession();
+    }, []);
+
+    const handleLogout = () => {
+        sessionStorage.removeItem("userid");
+        sessionStorage.removeItem("remainingTime");
+        navigate("/login");
+    }
+
     return (
         <><UNav /><div className="bg-white min-h-screen py-8 px-4">
             <div className="max-w-4xl mx-auto">
-                {/* Go Back Button */}
                 <button
                     onClick={() => navigate(-1)}
                     className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-200 mb-6"
