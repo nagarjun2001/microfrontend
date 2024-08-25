@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';  // Updated import
+import '@testing-library/jest-dom';
 import Homepage from '../components/Homepage';
 
 jest.mock("axios");

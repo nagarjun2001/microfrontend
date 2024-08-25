@@ -38,8 +38,8 @@ const UploadVideo = () => {
     formData.append('title', newVideo.title);
     formData.append('description', newVideo.description);
     formData.append('agelevel', newVideo.agelevel);
-    formData.append('creator_id', creatorid ? creatorid : ''); // Ensure creator_id is passed as a string
-    formData.append('category_id', newVideo.category_id ? newVideo.category_id : ''); // Ensure category_id is passed as a string
+    formData.append('creator_id', creatorid ? creatorid : '');
+    formData.append('category_id', newVideo.category_id ? newVideo.category_id : '');
     formData.append('file', newVideo.file);
     formData.append('image', newVideo.image);
 
@@ -159,7 +159,7 @@ const UploadVideo = () => {
               >
                 <option value="">Select Category</option>
                 {categories.map(cat => (
-                  <option key={cat.id} value={cat.id}>{cat.category_name}</option>
+                  <option key={cat.id} value={cat.id}>{cat.categoryname}</option>
                 ))}
               </select>
             </div>

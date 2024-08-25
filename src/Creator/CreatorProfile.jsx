@@ -5,8 +5,8 @@ import CNav from '../Navbar/CNav';
 import Loader from '../components/Loader';
 
 function CreatorProfile() {
-  const { id } = useParams(); // Get the creator ID from URL
-  const navigate = useNavigate(); // Hook to navigate programmatically
+  const { id } = useParams();
+  const navigate = useNavigate(); 
   const [creator, setCreator] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
@@ -59,7 +59,7 @@ function CreatorProfile() {
   };
 
   const handleGoBack = () => {
-    navigate(-1); // Navigate back to the previous page
+    navigate(-1);
   };
 
   if (loading) return <Loader />;
@@ -69,7 +69,6 @@ function CreatorProfile() {
     <div className=" min-h-screen">
       <CNav />
       <div className="container mx-auto px-4 py-6 max-w-3xl">
-        {/* Profile Header */} 
         <button
           onClick={handleGoBack}
           className="bg-gray-500 text-white px-6 py-3 rounded-md shadow-md hover:bg-gray-600 transition-colors duration-300"
@@ -79,7 +78,7 @@ function CreatorProfile() {
         {creator && (
           <section className="bg-white p-6 rounded-lg shadow-lg mb-6 flex items-center">
             <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center">
-              <span className="text-gray-600 text-4xl">👤</span> {/* Placeholder for profile image */}
+              <span className="text-gray-600 text-4xl">👤</span>
             </div>
             <div className="ml-4">
               <h2 className="text-3xl font-semibold text-gray-900 mb-2">{creator.name}</h2>
@@ -89,8 +88,6 @@ function CreatorProfile() {
             </div>
           </section>
         )}
-
-        {/* Edit Profile Form */}
         <section className="bg-white p-8 rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold mb-6 text-gray-900">Edit Profile</h2>
           {success && <p className="text-green-600 mb-4 text-lg">{success}</p>}

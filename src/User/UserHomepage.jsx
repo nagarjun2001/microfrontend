@@ -239,7 +239,7 @@ import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import UNav from '../Navbar/UNav';
 import Footer from '../components/Footer';
-import Slider from 'react-slick'; // Import Slider component
+// import Slider from 'react-slick';
 
 function UserHomepage() {
     const [videodata, setVideodata] = useState([]);
@@ -336,8 +336,8 @@ function UserHomepage() {
 
     const filteredVideos = videodata.filter(video => {
         const isBlockedVideo = userdata.blockedvideosid?.includes(video.id);
-        const isBlockedCategory = userdata.blockedcatid?.includes(video.category.category_name);
-        const isMatchingCategory = selectedCategory === 'All' || video.category.category_name === selectedCategory;
+        const isBlockedCategory = userdata.blockedcatid?.includes(video.category.categoryname);
+        const isMatchingCategory = selectedCategory === 'All' || video.category.categoryname === selectedCategory;
         const isMatchingSearchQuery = video.title.toLowerCase().includes(searchQuery.toLowerCase());
         const isMatchingAgeLevel = ageFilter === 'All' || video.agelevel === ageFilter;
         return !isBlockedVideo && !isBlockedCategory && isMatchingCategory && isMatchingSearchQuery && isMatchingAgeLevel;
@@ -368,7 +368,7 @@ function UserHomepage() {
             />
 
             {/* Carousel */}
-            <div className="max-w-2xl mx-auto">
+            {/* <div className="max-w-2xl mx-auto">
                 <Slider {...carouselSettings}>
                     <div>
                         <video className='object-cover w-full h-full'> <source src="videos.ctfassets.net/9uhkiji6mhey/6Iy2cR8JijV57Q2fmTPWPS/9c58a6c8df06672a4bd5997921c84691/ytkidsv1-content-03-2.mp4" type='mp4/video' /></video>
@@ -385,7 +385,7 @@ function UserHomepage() {
                     This carousel slider component is part of a larger, open-source library. Learn more
                     by going to the official documentation.
                 </p>
-            </div>
+            </div> */}
 
             {/* Carousel End */}
 
@@ -403,8 +403,8 @@ function UserHomepage() {
                                 <option value="All">All</option>
                                 {categories.length > 0 ? (
                                     categories.map((cat) => (
-                                        <option key={cat.id} value={cat.category_name}>
-                                            {cat.category_name}
+                                        <option key={cat.id} value={cat.categoryname}>
+                                            {cat.categoryname}
                                         </option>
                                     ))
                                 ) : (

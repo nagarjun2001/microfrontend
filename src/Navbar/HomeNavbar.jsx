@@ -1,6 +1,7 @@
 import React from 'react'
 import logo from '../images/ytlogo.png'
 import { toast } from 'react-toastify'
+import { Link } from 'react-router-dom';
 
 function HomeNavbar() {
     let handleClick = () => {
@@ -13,10 +14,10 @@ function HomeNavbar() {
     <div class="px-4">
         <div class="flex items-center justify-between">
             <div class="flex shrink-0">
-                <a aria-current="page" class="flex items-center" href="/">
+                <Link aria-current="page" class="flex items-center" to="/">
                     <img class="h-10 w-auto" src={logo} alt="YT Logo"/>
                     <p class="sr-only">Website Title</p>
-                </a>
+                </Link>
             </div>
             <div class="hidden md:flex md:items-center md:justify-center md:gap-5">
             <label
@@ -53,10 +54,10 @@ function HomeNavbar() {
 </label>
             </div>
             <div class="flex items-center justify-end gap-3">
-                <a class="hidden items-center justify-center rounded-xl bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-150 hover:bg-gray-50 sm:inline-flex"
-                    href="/regtype">Sign up</a>
-                <a class="inline-flex items-center justify-center rounded-xl bg-black/100 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                    href="/login">Login</a>
+                <Link class="hidden items-center justify-center rounded-xl bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-150 hover:bg-gray-50 sm:inline-flex"
+                    to="/regtype">Sign up</Link>
+                <Link class="inline-flex items-center justify-center rounded-xl bg-black/100 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                    to="/login">Login</Link>
             </div>
         </div>
     </div>

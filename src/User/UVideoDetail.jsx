@@ -70,7 +70,7 @@ const UVideoDetail = () => {
 
     const handleBlockCategory = async () => {
         try {
-            await axios.post(`http://localhost:1234/user/${userid}/block/category/${video.category.category_id}`);
+            await axios.post(`http://localhost:1234/user/${userid}/block/category/${video.category.id}`);
             toast.success("Category blocked successfully!");
             navigate("/UserHomepage");
         } catch (error) {
@@ -128,8 +128,8 @@ const UVideoDetail = () => {
 
     const filteredVideos = videodata.filter(video => {
         const isBlockedVideo = userdata.blockedvideosid?.includes(video.id);
-        const isBlockedCategory = userdata.blockedcatid?.includes(video.category.category_name);
-        const isMatchingCategory = selectedCategory === 'All' || video.category.category_name === selectedCategory;
+        const isBlockedCategory = userdata.blockedcatid?.includes(video.category.categoryname);
+        const isMatchingCategory = selectedCategory === 'All' || video.category.categoryname === selectedCategory;
         return !isBlockedVideo && !isBlockedCategory && isMatchingCategory;
     });
 
@@ -163,7 +163,7 @@ const UVideoDetail = () => {
                         <h1 className="text-2xl font-bold mb-2">{video.title}</h1>
                         <p className="text-gray-600 mb-4">{video.description || "No description available"}</p>
                         <p className="text-gray-600 mb-4"><span className="font-semibold">Age Level:</span> {video.agelevel || "Not specified"}</p>
-                        <p className="text-gray-600 mb-4"><span className="font-semibold">Category:</span> {video.category.category_name || "Uncategorized"}</p>
+                        <p className="text-gray-600 mb-4"><span className="font-semibold">Category:</span> {video.category.categoryname || "Uncategorized"}</p>
 
                         <div className="flex items-center space-x-4 mb-6">
                             <button

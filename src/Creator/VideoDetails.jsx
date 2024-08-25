@@ -1,95 +1,3 @@
-// import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
-// import { useNavigate, useParams } from 'react-router-dom';
-// import { toast } from 'react-toastify';
-// import ReactLoading from 'react-loading';
-// import Loader from '../components/Loader';
-// import Modern from '../Navbar/Modern';
-// import CNav from '../Navbar/CNav';
-
-// const VideoDetails = () => {
-//   const { videoId } = useParams();
-//   const navigate = useNavigate();
-//   const [video, setVideo] = useState(null);
-
-//   useEffect(() => {
-//     axios.get(`http://localhost:1234/video/${videoId}`)
-//       .then(res => {
-//         console.log(res.data); // Log data to inspect structure
-//         setVideo(res.data);
-//       })
-//       .catch(err => console.error('Error fetching video details:', err));
-//   }, [videoId]);
-
-//   const handleEdit = () => {
-//     navigate(`/editvideo/${videoId}`);
-//   };
-
-//   const handleDelete = () => {
-//     axios.delete(`http://localhost:1234/video/${videoId}`)
-//       .then(() => {
-//         navigate('/CreatorHomepage');
-//         toast.success("Deleted Successfully!");
-//       })
-//       .catch(err => toast.error('Error deleting video:', err));
-//   };
-
-//   if (!video) return <Loader />
-
-//   // Destructure properties, including category which is an object
-//   const { title, description, agelevel, category, videofile } = video;
-
-//   // Check if category is an object and extract name
-//   const categoryName = category?.category_name || 'Unknown';
-
-//   return (
-//     <>
-//     <CNav />
-//     <div className="p-8 bg-gray-900 min-h-screen flex flex-col items-center text-white">
-//       <div className=" text-white p-4 mb-1 rounded-lg shadow-lg">
-//         <h1 className="text-4xl font-extrabold">Video Details</h1>
-//       </div>
-//       <div className="w-full max-w-4xl bg-gray-800 p-6 rounded-lg shadow-xl">
-//         {videofile ? (
-//           <video
-//             className="w-full rounded-lg shadow-md"
-//             controls
-//             muted
-//             autoPlay
-//           >
-//             <source src={`data:video/mp4;base64,${videofile}`} type="video/mp4" />
-//             Your browser does not support the video tag.
-//           </video>
-//         ) : (
-//           <p className="text-center text-gray-400">No video file available</p>
-//         )}
-//         <div className="mt-6">
-//           <h2 className="text-3xl font-bold mb-2">{title}</h2>
-//           <p className="text-lg mb-1">Description: <span className="text-gray-400">{description}</span></p>
-//           <p className="text-lg mb-1">Age Level: <span className="text-gray-400">{agelevel}</span></p>
-//           <p className="text-lg">Category: <span className="text-gray-400">{categoryName}</span></p>
-//         </div>
-//       </div>
-//       <div className="mt-8 flex gap-6">
-//         <button
-//           onClick={handleEdit}
-//           className="bg-yellow-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-yellow-600 transition-transform transform hover:scale-105"
-//         >
-//           Edit
-//         </button>
-//         <button
-//           onClick={handleDelete}
-//           className="bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-red-600 transition-transform transform hover:scale-105"
-//         >
-//           Delete
-//         </button>
-//       </div>
-//     </div></>
-//   );
-// };
-
-// export default VideoDetails;
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -108,7 +16,6 @@ const VideoDetails = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Fetch video details and comments
         axios.get(`http://localhost:1234/video/${videoId}`)
             .then((res) => {
                 setVideo(res.data);
@@ -196,7 +103,7 @@ const VideoDetails = () => {
     };
     
     const handleGoBack = () => {
-      navigate(-1); // Navigate back to the previous page
+      navigate(-1);
     };
 
     if (!video) return <Loader />;
@@ -213,8 +120,6 @@ const VideoDetails = () => {
           Go Back
         </button>
                   <h1 className='relative text-3xl text-center font-bold mb-2'>Video Details</h1>
-                  
-                    {/* Video Player */}
                     <div className="relative">
                         {video.videofile ? (
                             <video
@@ -229,13 +134,10 @@ const VideoDetails = () => {
                             <p className="text-center text-gray-400">No video file available</p>
                         )}
                     </div>
-
-                    {/* Video Title and Description */}
                     <h1 className="text-3xl font-bold mb-2">{video.title}</h1>
                     <p className="text-gray-600 mb-4"><span className="font-semibold">Descripton: </span>{video.description || "No description available"}</p>
                     <p className="text-gray-600 mb-4"><span className="font-semibold">Age Level:</span> {video.agelevel || "Not specified"}</p>
                     <p className="text-gray-600 mb-4"><span className="font-semibold">Category:</span> {video.category.category_name || "Uncategorized"}</p>
-
                     <div className="mt-8 flex gap-6">
                         {/* <button
                             onClick={handleEdit}
@@ -253,7 +155,7 @@ const VideoDetails = () => {
 
 
 
-                    {/* Like/Dislike and Block Buttons
+                    {/* 
                     <div className="flex items-center space-x-4 mb-6">
                         <button
                             onClick={handleLike}
@@ -287,7 +189,6 @@ const VideoDetails = () => {
                         </button>
                     </div> */}
 
-                    {/* Comments Section */}
                     {/* <div className="mt-8">
                         <h2 className="text-2xl font-semibold mb-4">Comments</h2>
                         <div className="space-y-4 mb-6">

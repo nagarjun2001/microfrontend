@@ -10,16 +10,16 @@ function LoginNavbar() {
   <div class="px-4">
       <div class="flex items-center justify-between">
           <div class="flex shrink-0">
-              <a aria-current="page" class="flex items-center" href="/">
+              <Link aria-current="page" class="flex items-center" to="/">
                   <img class="h-10 w-auto" src={logo} alt="YT Logo"/>
                   <p class="sr-only">Website Title</p>
-              </a>
+              </Link>
           </div>
           <div class="hidden md:flex md:items-center md:justify-center md:gap-5">
           Enter to Explore, Learn, and Create!          </div>
           <div class="flex items-center justify-end gap-3">
-              <a class="hidden items-center justify-center rounded-xl bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-150 hover:bg-gray-50 sm:inline-flex"
-                  href="/regtype">Sign up</a>
+              <Link class="hidden items-center justify-center rounded-xl bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-all duration-150 hover:bg-gray-50 sm:inline-flex"
+                  to="/regtype">Sign up</Link>
                   <Link to="#" onClick={() => window.history.back()} className="inline-flex items-center text-white-800 hover:text-blue-700">
     <svg
       width="24"

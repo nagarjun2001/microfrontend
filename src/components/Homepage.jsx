@@ -2,6 +2,7 @@ import React from 'react';
 import './Homepage.css';
 import HomeNavbar from '../Navbar/HomeNavbar';
 import Footer from './Footer';
+import { Link } from 'react-router-dom';
 
 const Homepage = () => {
     return (
@@ -15,7 +16,7 @@ const Homepage = () => {
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-10 p-6 text-center text-white rounded-lg">
                     <h1 className="text-5xl font-bold mb-4 animate__animated animate__fadeIn">Welcome to KidsTube!</h1>
                     <p className="text-xl mb-6 animate__animated animate__fadeIn animate__delay-1s">Discover fun and educational videos just for you.</p>
-                    <a href="/regtype" id='button' className="bg-gradient-to-r from-red-500 to-red-700 text-white py-2 px-8 rounded-lg font-semibold shadow-xl hover:shadow-2xl transition-transform transform hover:scale-105">Sign up now to Explore!</a>
+                    <Link to="/regtype" id='button' className="bg-gradient-to-r from-red-500 to-red-700 text-white py-2 px-8 rounded-lg font-semibold shadow-xl hover:shadow-2xl transition-transform transform hover:scale-105">Sign up now to Explore!</Link>
                 </div>
             </div>
         </section>

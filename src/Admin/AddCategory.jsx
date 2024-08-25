@@ -14,7 +14,7 @@ function AddCategory() {
     e.preventDefault();
     try {
         axios
-        .post("http://localhost:1234/category",{category_name:categoryName})
+        .post("http://localhost:1234/category",{categoryname:categoryName})
         .then((res)=>{
             console.log(categoryName);
             toast.success("Category added!")

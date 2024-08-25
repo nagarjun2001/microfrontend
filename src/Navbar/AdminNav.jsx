@@ -10,10 +10,10 @@ function AdminNav() {
   <div class="px-4">
       <div class="flex items-center justify-between">
           <div class="flex shrink-0">
-              <a aria-current="page" class="flex items-center" href="/">
+              <Link aria-current="page" class="flex items-center" to="/">
                   <img class="h-10 w-auto" src={logo} alt="YT Logo"/>
                   <p class="sr-only">Website Title</p>
-              </a>
+              </Link>
           </div>
           <div class="hidden md:flex md:items-center md:justify-center md:gap-5">
           Enter to Explore, Learn, and Create!          </div>

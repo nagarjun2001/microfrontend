@@ -11,7 +11,7 @@ const CProfileDrop = ({ onLogout }) => {
     const [remainingTime, setRemainingTime] = useState(null);
     const profileRef = useRef();
 
-    const creatorId = sessionStorage.getItem("creatorid"); // Retrieve creator ID
+    const creatorId = sessionStorage.getItem("creatorid");
 
     useEffect(() => {
         const handleClickOutside = (e) => {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UserRegNavbar from '../Navbar/UserRegNav';
@@ -20,7 +20,7 @@ export default function UserRegister() {
         acceptTerms: false
     });
 
-    const [errors, setErrors] = useState({}); // State to hold error messages
+    const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
         const { name, type, value, checked } = e.target;
@@ -33,23 +33,18 @@ export default function UserRegister() {
     const validate = () => {
         const newErrors = {};
 
-        // Username validation
         if (!formData.uname) newErrors.uname = "Username is required.";
         else if (formData.uname.length < 3) newErrors.uname = "Username must be at least 3 characters long.";
 
-        // First Name validation
         if (!formData.fname) newErrors.fname = "First name is required.";
         else if (!/^[A-Za-z]+$/.test(formData.fname)) newErrors.fname = "First name can only contain letters.";
 
-        // Last Name validation
         if (!formData.lname) newErrors.lname = "Last name is required.";
         else if (!/^[A-Za-z]+$/.test(formData.lname)) newErrors.lname = "Last name can only contain letters.";
 
-        // Email validation
         if (!formData.email) newErrors.email = "Email is required.";
         else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Email address is invalid.";
 
-        // Password validation
         if (!formData.password) newErrors.password = "Password is required.";
         else if (formData.password.length < 8) newErrors.password = "Password must be at least 8 characters long.";
         else if (!/[A-Z]/.test(formData.password)) newErrors.password = "Password must contain at least one uppercase letter.";
@@ -74,8 +69,8 @@ export default function UserRegister() {
         if (validate()) {
             try {
                 await axios.post("http://localhost:1234/user", formData);
-                toast.success("Registered Successfully!");
                 navigate("/login");
+                toast.success("Registered Successfully!");
             } catch (error) {
                 console.error("Registration failed:", error);
                 toast.error("Registration failed. Please try again.");
@@ -152,7 +147,7 @@ export default function UserRegister() {
                                     onChange={handleChange}
                                 />
                                 <label htmlFor="acceptTerms" className="ml-2 text-gray-700 text-sm">
-                                    I agree to the <a href="/terms" className="text-blue-600 underline">Terms and Conditions</a>
+                                    I agree to the <Link to="/terms" className="text-blue-600 underline">Terms and Conditions</Link>
                                 </label>
                                 {errors.acceptTerms && <p className="text-red-500 text-sm ml-6">{errors.acceptTerms}</p>}
                             </div>
@@ -169,8 +164,6 @@ export default function UserRegister() {
                     </div>
                 </div>
             </div>
-
-            <ToastContainer />
         </>
     );
 }

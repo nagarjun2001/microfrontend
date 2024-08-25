@@ -37,8 +37,8 @@ const Login = () => {
                 .then((res) => {
                     if (res.data.email === email && res.data.password === password) {
                         sessionStorage.setItem(role === "creator" ? 'creatorid' : 'userid', res.data.id);
-                        toast.success("Login Success");
                         navigate(role === "creator" ? "/CreatorHomepage" : "/UserHomepage");
+                        toast.success("Login Success");
                     } else {
                         toast.error("Incorrect Email or Password.");
                     }

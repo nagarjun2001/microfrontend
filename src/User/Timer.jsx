@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const Timer = ({ isVisible, onClose }) => {
@@ -161,18 +162,18 @@ const Timer = ({ isVisible, onClose }) => {
                                 </button>
                             </div>
                             <h2 className="text-2xl font-semibold mb-4 border-b border-gray-600 pb-2">Blocked Data</h2>
-                            <a
-                                href="/userblockvid"
+                            <Link
+                                to="/userblockvid"
                                 className="bg-teal-600 w-48 text-center text-white px-4 py-2 rounded-md hover:bg-teal-700 transition-colors duration-300"
                             >
                                 Blocked Videos
-                            </a>
-                            <a
-                                href="/userblockcat"
+                            </Link>
+                            <Link
+                                to="/userblockcat"
                                 className="bg-teal-600 w-48 text-center text-white px-4 py-2 rounded-md hover:bg-teal-700 transition-colors duration-300"
                             >
                                 Blocked Categories
-                            </a>
+                            </Link>
                         </div>
                     )}
                 </div>
