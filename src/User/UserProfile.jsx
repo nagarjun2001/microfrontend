@@ -11,6 +11,7 @@ const UserProfile = () => {
   
   const [user, setUser] = useState(null);
   const [formData, setFormData] = useState({
+    id: userId,
     uname: '',
     fname: '',
     lname: '',
@@ -28,6 +29,7 @@ const UserProfile = () => {
       .then(response => {
         setUser(response.data);
         setFormData({
+          id: userId,
           uname: response.data.uname,
           fname: response.data.fname,
           lname: response.data.lname,
@@ -89,6 +91,8 @@ const UserProfile = () => {
         if (response.data === 'Success') {
           setSuccess('Profile updated successfully');
           setUser(prevData => ({ ...prevData, ...formData }));
+          toast.success("Profile updated!");
+          window.location.reload();
         } else {
           setError('Error updating profile');
         }

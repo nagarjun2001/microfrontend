@@ -9,6 +9,7 @@ function CreatorProfile() {
   const navigate = useNavigate(); 
   const [creator, setCreator] = useState(null);
   const [formData, setFormData] = useState({
+    id:id,
     name: '',
     creatorname: '',
     channelname: '',

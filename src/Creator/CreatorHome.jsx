@@ -124,9 +124,12 @@ function CreatorHome() {
                   <div className="p-4 bg-gray-100 rounded-xl">
                     <h3 className="text-xl font-semibold text-gray-900 truncate mb-1">{video.title}</h3>
                     <p className="text-gray-700 mb-2 truncate">{video.description}</p>
-                    <p className={`text-sm font-semibold ${video.status ? 'text-green-600' : 'text-red-600'}`}>
-                      {video.status ? 'Approved' : 'Rejected'}
+                    <p className={`text-sm font-semibold ${video.status ? 'text-green-600' : 'text-yellow-600'}`}>
+                      {video.status ? 'Approved' : 'Pending'}
                     </p>
+                    {/* <p className={`text-sm font-semibold ${video.status === true ? 'text-green-600' : video.status === false ? 'text-red-600' : 'text-yellow-600'}`}>
+                      {video.status === true ? 'Approved' : video.status === false ? 'Rejected' : 'Pending'}
+                    </p> */}
                   </div>
                 </div>
               ))

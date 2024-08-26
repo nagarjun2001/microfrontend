@@ -46,8 +46,7 @@ const Status = () => {
             .then((res) => {
                 res.data.status = true;
                 toast.success("Video Approved Successfully");
-                return axios.put(`http://localhost:1234/video/${id}`, res.data)
-                .then(window.location.reload());
+                return axios.put(`http://localhost:1234/video/${id}`, res.data);
             })
             .catch((err) => {
                 toast.error("Error in Approving video");
@@ -123,7 +122,7 @@ const Status = () => {
                                 <div key={video.id} className=" p-4 rounded-2xl shadow-lg flex flex-col gap-4">
                                     <img
                                         className="w-full h-32 object-cover rounded-md mb-2"
-                                        src={`data:image/jpeg;base64,${video.image}`} // Assuming thumbnail is in base64 format
+                                        src={`data:image/jpeg;base64,${video.image}`}
                                         alt={video.title}
                                     />
                                     <h3 className="text-lg font-semibold text-gray-800">{video.title}</h3>
@@ -216,7 +215,6 @@ const Status = () => {
                     </div>
                 )}
             </main>
-            <ToastContainer />
         </div>
     );
 };

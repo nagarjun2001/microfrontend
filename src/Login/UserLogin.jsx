@@ -72,7 +72,6 @@ const UserLogin = () => {
                     </button>
                 </form>
             </div>
-            <ToastContainer />
         </div>
     );
 };

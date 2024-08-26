@@ -16,22 +16,8 @@ function Error() {
         <Link to="/">
           <button 
             type="button" 
-            className="py-2 px-6 bg-blue-600 text-white font-bold rounded-lg hover:bg-red-700 transition-colors duration-200"
+            className="py-2 px-6 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors duration-200"
           >
-            <svg 
-              className="inline-block w-5 h-5 mr-2" 
-              xmlns="http://www.w3.org/2000/svg" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor" 
-              strokeWidth="2"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                d="M5 12l7 7 7-7-7-7-7 7z"
-              />
-            </svg>
             Go to Home
           </button>
         </Link>

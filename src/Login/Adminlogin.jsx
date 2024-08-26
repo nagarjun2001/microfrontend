@@ -49,7 +49,6 @@ export default function UserLogin() {
         <>
         <AdminNav />
             <div className="relative min-h-screen flex items-center">
-                {/* Image on the left */}
                 <div className="hidden lg:flex flex-shrink-0 w-1/2 h-full">
                     <img
                         src="https://cdn.dribbble.com/users/1946759/screenshots/4596801/admin.png"

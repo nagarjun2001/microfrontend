@@ -72,7 +72,6 @@ const CreatorLogin = () => {
                     </button>
                 </form>
             </div>
-            <ToastContainer />
         </div>
     );
 };

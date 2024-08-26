@@ -70,7 +70,7 @@ const CProfileDrop = ({ onLogout }) => {
                 <ul className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg z-10">
                     <li>
                         <Link
-                            to={`/creatorprofile/${creatorId}`} // Correct URL path without colon
+                            to={`/creatorprofile/${creatorId}`}
                             className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                         >
                             Edit Profile

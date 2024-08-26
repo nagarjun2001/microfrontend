@@ -128,7 +128,6 @@ function BlockedVid() {
                     <p className="text-gray-600">No videos blocked.</p>
                 )}
 
-                {/* Modal for Video Preview */}
                 {isModalOpen && selectedVideo && (
                     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75 z-50">
                         <div className="bg-white p-4 rounded-lg max-w-2xl w-full relative">

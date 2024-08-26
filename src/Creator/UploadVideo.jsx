@@ -176,8 +176,6 @@ const UploadVideo = () => {
             </div>
           </form>
         </div>
-
-        <ToastContainer />
       </div>
     </>
   );
